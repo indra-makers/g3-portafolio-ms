@@ -5,22 +5,26 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 @Entity
-@Table(name="tbl_portfolio")
+@Table(name = "tbl_portfolio")
 public class Portfolio implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id_portfolio")
+	@Column(name = "id_portfolio")
 	private int id;
-	
-	@Column(name="name_portfolio")
+
+	@Column(name = "name_portfolio")
 	private String name;
-	
-	@Column(name="id_user")
+
+	@Column(name = "id_user")
 	private int id_user;
-	
-	@Column(name="balance_portfolio")
+
+	@Column(name = "balance_portfolio")
 	private Long balance;
+
+	public Portfolio() {
+		super();
+	}
 
 	public int getId() {
 		return id;
@@ -53,6 +57,5 @@ public class Portfolio implements Serializable {
 	public void setBalance(Long balance) {
 		this.balance = balance;
 	}
-	
-	
+
 }
