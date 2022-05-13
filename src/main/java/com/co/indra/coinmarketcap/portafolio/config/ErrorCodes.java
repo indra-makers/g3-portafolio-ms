@@ -1,7 +1,7 @@
 package com.co.indra.coinmarketcap.portafolio.config;
 
 public enum ErrorCodes {
-	error("", "");
+	NAME_ALREADY_IN_USE("the portfolio name is already in use", "001");
 
 	String message;
 	String code;

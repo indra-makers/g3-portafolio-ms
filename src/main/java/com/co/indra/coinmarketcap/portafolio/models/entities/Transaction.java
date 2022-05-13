@@ -3,38 +3,27 @@ package com.co.indra.coinmarketcap.portafolio.models.entities;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.*;
+public class Transaction implements Serializable {
 
-
-@Entity
-@Table(name="tbl_assets_transaction")
-public class Transaction implements Serializable{
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id_transaction")
 	private int id;
-	
-	@Column(name="id_asset")
-	private int id_asset;
-	
-	@Column(name="type")
+
+	private int idAsset;
+
 	private String type;
-	
-	@Column(name="price_transaction")
+
 	private Long price;
-	
-	@Column(name="date_time")
-	private Date date_time;
-	
-	@Column(name="fee")
+
+	private Date dateTime;
+
 	private Long fee;
-	
-	@Column(name="notes")
+
 	private String notes;
-	
-	@Column(name="amount")
+
 	private Long amount;
+
+	public Transaction() {
+
+	}
 
 	public int getId() {
 		return id;
@@ -44,12 +33,12 @@ public class Transaction implements Serializable{
 		this.id = id;
 	}
 
-	public int getId_asset() {
-		return id_asset;
+	public int getIdAsset() {
+		return idAsset;
 	}
 
-	public void setId_asset(int id_asset) {
-		this.id_asset = id_asset;
+	public void setIdAsset(int idAsset) {
+		this.idAsset = idAsset;
 	}
 
 	public String getType() {
@@ -68,12 +57,12 @@ public class Transaction implements Serializable{
 		this.price = price;
 	}
 
-	public Date getDate_time() {
-		return date_time;
+	public Date getDateTime() {
+		return dateTime;
 	}
 
-	public void setDate_time(Date date_time) {
-		this.date_time = date_time;
+	public void setDateTime(Date dateTime) {
+		this.dateTime = dateTime;
 	}
 
 	public Long getFee() {
@@ -99,9 +88,5 @@ public class Transaction implements Serializable{
 	public void setAmount(Long amount) {
 		this.amount = amount;
 	}
-	
-	
-	
-	
-	
+
 }

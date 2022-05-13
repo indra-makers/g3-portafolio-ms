@@ -2,24 +2,14 @@ package com.co.indra.coinmarketcap.portafolio.models.entities;
 
 import java.io.Serializable;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "tbl_portfolio")
 public class Portfolio implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_portfolio")
 	private int id;
 
-	@Column(name = "name_portfolio")
 	private String name;
 
-	@Column(name = "id_user")
-	private int id_user;
+	private int idUser;
 
-	@Column(name = "balance_portfolio")
 	private Long balance;
 
 	public Portfolio() {
@@ -42,12 +32,12 @@ public class Portfolio implements Serializable {
 		this.name = name;
 	}
 
-	public int getId_user() {
-		return id_user;
+	public int getIdUser() {
+		return idUser;
 	}
 
-	public void setId_user(int id_user) {
-		this.id_user = id_user;
+	public void setIdUser(int idUser) {
+		this.idUser = idUser;
 	}
 
 	public Long getBalance() {

@@ -2,47 +2,33 @@ package com.co.indra.coinmarketcap.portafolio.models.entities;
 
 import java.io.Serializable;
 
-import javax.persistence.*;
-
-
-@Entity
-@Table(name="tbl_assets")
 public class Asset implements Serializable {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id_assets")
+
 	private int id;
-	
-	@Column(name="id_portfolio")
-	private int id_portfolio;
-	
-	@Column(name="accouting")
+
+	private int idPortfolio;
+
 	private int accouting;
-	
-	@Column(name="name_asset")
-	private String name_asset;
-	
-	@Column(name="quantity")
+
+	private String nameAsset;
+
 	private int quantity;
-	
-	@Column(name="price")
+
 	private Long price;
-	
-	@Column(name="daily_variation")
-	private Long daily_variation;
-	
-	@Column(name="holding")
+
+	private Long dailyVariation;
+
 	private Long holding;
-	
-	@Column(name="avg_buy_price")
-	private Long avg_buy_price;
-	
-	@Column(name="profit")
+
+	private Long avgBuyPrice;
+
 	private Long profit;
-	
-	@Column(name="loss")
+
 	private Long loss;
+
+	public Asset() {
+
+	}
 
 	public int getId() {
 		return id;
@@ -52,12 +38,12 @@ public class Asset implements Serializable {
 		this.id = id;
 	}
 
-	public int getId_portfolio() {
-		return id_portfolio;
+	public int getIdPortfolio() {
+		return idPortfolio;
 	}
 
-	public void setId_portfolio(int id_portfolio) {
-		this.id_portfolio = id_portfolio;
+	public void setIdPortfolio(int idPortfolio) {
+		this.idPortfolio = idPortfolio;
 	}
 
 	public int getAccouting() {
@@ -68,12 +54,12 @@ public class Asset implements Serializable {
 		this.accouting = accouting;
 	}
 
-	public String getName_asset() {
-		return name_asset;
+	public String getNameAsset() {
+		return nameAsset;
 	}
 
-	public void setName_asset(String name_asset) {
-		this.name_asset = name_asset;
+	public void setNameAsset(String nameAsset) {
+		this.nameAsset = nameAsset;
 	}
 
 	public int getQuantity() {
@@ -92,12 +78,12 @@ public class Asset implements Serializable {
 		this.price = price;
 	}
 
-	public Long getDaily_variation() {
-		return daily_variation;
+	public Long getDailyVariation() {
+		return dailyVariation;
 	}
 
-	public void setDaily_variation(Long daily_variation) {
-		this.daily_variation = daily_variation;
+	public void setDailyVariation(Long dailyVariation) {
+		this.dailyVariation = dailyVariation;
 	}
 
 	public Long getHolding() {
@@ -108,12 +94,12 @@ public class Asset implements Serializable {
 		this.holding = holding;
 	}
 
-	public Long getAvg_buy_price() {
-		return avg_buy_price;
+	public Long getAvgBuyPrice() {
+		return avgBuyPrice;
 	}
 
-	public void setAvg_buy_price(Long avg_buy_price) {
-		this.avg_buy_price = avg_buy_price;
+	public void setAvgBuyPrice(Long avgBuyPrice) {
+		this.avgBuyPrice = avgBuyPrice;
 	}
 
 	public Long getProfit() {
@@ -131,8 +117,5 @@ public class Asset implements Serializable {
 	public void setLoss(Long loss) {
 		this.loss = loss;
 	}
-	
-	
-		
 
 }

@@ -16,9 +16,8 @@ class PortfolioRowMapper implements RowMapper<Portfolio> {
 	public Portfolio mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Portfolio portfolio = new Portfolio();
 		portfolio.setName(rs.getString("name_portfolio"));
-		portfolio.setId_user(rs.getInt("id_user"));
+		portfolio.setIdUser(rs.getInt("id_user"));
 		portfolio.setBalance(rs.getLong("balance_portfolio"));
-
 		return portfolio;
 	}
 }
@@ -30,7 +29,7 @@ public class PortfolioRepository {
 
 	public void create(Portfolio portfolio) {
 		template.update("INSERT INTO tbl_portfolio(name_portfolio,id_user,balance_portfolio) values (?,?,?)",
-				portfolio.getName(), portfolio.getId_user(), portfolio.getBalance());
+				portfolio.getName(), portfolio.getIdUser(), portfolio.getBalance());
 	}
 
 	public List<Portfolio> getPorfolioByUser(int idUser) {
