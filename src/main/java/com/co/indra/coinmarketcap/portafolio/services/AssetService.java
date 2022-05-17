@@ -14,30 +14,42 @@ import org.springframework.stereotype.Service;
 @Service
 public class AssetService {
 
-    @Autowired
-    AssetRepository assetRepository;
+	@Autowired
+	AssetRepository assetRepository;
 
-    @Autowired
-    PortfolioRepository portfolioRepository;
+	@Autowired
+	PortfolioRepository portfolioRepository;
 
-    @Autowired
-    TransactionRepository transactionRepository;
+	@Autowired
+	TransactionRepository transactionRepository;
 
-    public void createAsset(Asset asset, int idPortfolio){
-        if(portfolioRepository.findByPortfolioId(idPortfolio).isEmpty()){
-            throw new NotFoundException(ErrorCodes.PORTFOLIO_DOES_NOT_EXIST.getMessage());
-        }
-        if(!assetRepository.findByPortfolioId(idPortfolio).isEmpty()){
-            throw new BusinessException(ErrorCodes.PORTFOLIO_WITH_ASSET_ALREADY_EXISTS);
-        }
-        assetRepository.createAsset(asset, idPortfolio);
+	public void createAsset(Asset asset, int idPortfolio) {
+		if (portfolioRepository.findByPortfolioId(idPortfolio).isEmpty()) {
+			throw new NotFoundException(ErrorCodes.PORTFOLIO_DOES_NOT_EXIST.getMessage());
+		}
+		if (!assetRepository.findByPortfolioId(idPortfolio).isEmpty()) {
+			throw new BusinessException(ErrorCodes.PORTFOLIO_WITH_ASSET_ALREADY_EXISTS);
+		}
+		assetRepository.createAsset(asset, idPortfolio);
 
-    }
-    public void addTransactionToAsset(Transaction transaction, int idAsset){
-        if(assetRepository.findById(idAsset).isEmpty()){
-            throw new NotFoundException(ErrorCodes.ASSET_NOT_EXIST.getMessage());
-        }
-        transactionRepository.addTransactionToAsset(transaction, idAsset);
-    }
+	}
+
+	public void addTransactionToAsset(Transaction transaction, int idAsset) {
+		if (assetRepository.findById(idAsset).isEmpty()) {
+			throw new NotFoundException(ErrorCodes.ASSET_NOT_EXIST.getMessage());
+		}
+		transactionRepository.addTransactionToAsset(transaction, idAsset);
+	}
+
+	public int delete(int id) {
+
+		if (assetRepository.delete(id) == 0) {
+			throw new NotFoundException(ErrorCodes.ASSET_NOT_EXIST.getMessage());
+		} else {
+
+			return assetRepository.delete(id);
+		}
+
+	}
 
 }
