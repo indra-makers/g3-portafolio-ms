@@ -81,7 +81,7 @@ public class PortfolioControllerTest {
         ErrorResponse error = objectMapper.readValue(textREsponse, ErrorResponse.class);
 
         Assertions.assertEquals("001", error.getCode());
-        Assertions.assertEquals("Portafolio with that name already exists", error.getMessage());
+        Assertions.assertEquals("the portfolio name is already in use", error.getMessage());
 
     }
 	
