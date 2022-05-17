@@ -1,6 +1,7 @@
 package com.co.indra.coinmarketcap.portafolio.models.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Asset implements Serializable {
 
@@ -25,6 +26,7 @@ public class Asset implements Serializable {
 	private Double profit;
 
 	private Double loss;
+
 
 	public Asset() {
 

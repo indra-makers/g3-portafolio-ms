@@ -2,6 +2,9 @@ package com.co.indra.coinmarketcap.portafolio.controllers;
 
 import java.util.List;
 
+import com.co.indra.coinmarketcap.portafolio.models.entities.Asset;
+import com.co.indra.coinmarketcap.portafolio.models.entities.Transaction;
+import com.co.indra.coinmarketcap.portafolio.services.AssetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +24,8 @@ public class PortfolioController {
 
 	@Autowired
 	private PortfolioService portfolioService;
+	@Autowired
+	private AssetService assetService;
 
 	@PostMapping
 	public void create(@RequestBody Portfolio portfolio) {
@@ -31,6 +36,10 @@ public class PortfolioController {
 	public List<Portfolio> getDeviceLocation(@PathVariable(name = "id") int id) {
 		return portfolioService.getPorfolioByUser(id);
 
+	}
+	@PostMapping(Routes.PORTFOLIO_ID)
+	public void createAsset(@RequestBody Asset asset, @PathVariable("idPortfolio") int idPortfolio){
+		assetService.createAsset(asset,idPortfolio);
 	}
 
 }
