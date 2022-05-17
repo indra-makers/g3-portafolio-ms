@@ -3,12 +3,10 @@ package com.co.indra.coinmarketcap.portafolio.repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-
 import com.co.indra.coinmarketcap.portafolio.models.entities.Portfolio;
 
 class PortfolioRowMapper implements RowMapper<Portfolio> {
@@ -32,9 +30,15 @@ public class PortfolioRepository {
 				portfolio.getName(), portfolio.getIdUser(), portfolio.getBalance());
 	}
 
-	public List<Portfolio> getPorfolioByUser(int idUser) {
-		return template.query("select name_portfolio, balance_portfolio where id_user=?", new PortfolioRowMapper(),
-				idUser);
+	public List<Portfolio> findByNameAndUsername(int idUser, String name) {
+		return template.query(
+				"select id_user, name_portfolio, balance_portfolio from tbl_portfolio where id_user = ? and name_portfolio = ?",
+				new PortfolioRowMapper(), idUser, name);
+	}
+
+	public List<Portfolio> getPorfolio(int idUser) {
+		return template.query("select id_user, name_portfolio, balance_portfolio from tbl_portfolio where id_user=?",
+				new PortfolioRowMapper(), idUser);
 	}
 
 }
