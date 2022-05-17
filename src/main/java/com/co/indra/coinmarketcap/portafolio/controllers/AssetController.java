@@ -18,5 +18,11 @@ public class AssetController {
     public void addTransactionToAsset(@RequestBody Transaction transaction, @PathVariable("idAsset") int idAsset){
         assetService.addTransactionToAsset(transaction, idAsset);
     }
+    
+    @DeleteMapping(Routes.DELETE_ASSETS)
+    public void delete(@PathVariable("idAsset") int idAsset) {
+    	assetService.delete(idAsset);
+    }
+    
 
 }
