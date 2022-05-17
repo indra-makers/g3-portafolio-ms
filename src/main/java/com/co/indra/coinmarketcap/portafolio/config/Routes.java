@@ -6,5 +6,6 @@ public class Routes {
 	public static final String PORTFOLIO_USER = "/users/{id}/portfolios";
 	public static final String ASSETS_PATH = "/assets";
 	public static final String TRANSACTIONS_PATH = "/transactions";
+	public static final String PORTFOLIO_ID = "/{idPortfolio}/assets";
 	
 }

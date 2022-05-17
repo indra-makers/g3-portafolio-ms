@@ -30,6 +30,13 @@ public class PortfolioRepository {
 				portfolio.getName(), portfolio.getIdUser(), portfolio.getBalance());
 	}
 
+	public List<Portfolio> findByPortfolioId(int id) {
+		return template.query(
+				"select * from tbl_portfolio where id_portfolio = ?",
+				new PortfolioRowMapper(), id
+		);
+	}
+
 	public List<Portfolio> findByNameAndUsername(int idUser, String name) {
 		return template.query(
 				"select id_user, name_portfolio, balance_portfolio from tbl_portfolio where id_user = ? and name_portfolio = ?",

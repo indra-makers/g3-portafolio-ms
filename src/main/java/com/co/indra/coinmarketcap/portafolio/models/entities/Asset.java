@@ -14,17 +14,17 @@ public class Asset implements Serializable {
 
 	private int quantity;
 
-	private Long price;
+	private Double price;
 
-	private Long dailyVariation;
+	private Double dailyVariation;
 
-	private Long holding;
+	private Double holding;
 
-	private Long avgBuyPrice;
+	private Double avgBuyPrice;
 
-	private Long profit;
+	private Double profit;
 
-	private Long loss;
+	private Double loss;
 
 	public Asset() {
 
@@ -70,51 +70,51 @@ public class Asset implements Serializable {
 		this.quantity = quantity;
 	}
 
-	public Long getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(Long price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 
-	public Long getDailyVariation() {
+	public Double getDailyVariation() {
 		return dailyVariation;
 	}
 
-	public void setDailyVariation(Long dailyVariation) {
+	public void setDailyVariation(Double dailyVariation) {
 		this.dailyVariation = dailyVariation;
 	}
 
-	public Long getHolding() {
+	public Double getHolding() {
 		return holding;
 	}
 
-	public void setHolding(Long holding) {
+	public void setHolding(Double holding) {
 		this.holding = holding;
 	}
 
-	public Long getAvgBuyPrice() {
+	public Double getAvgBuyPrice() {
 		return avgBuyPrice;
 	}
 
-	public void setAvgBuyPrice(Long avgBuyPrice) {
+	public void setAvgBuyPrice(Double avgBuyPrice) {
 		this.avgBuyPrice = avgBuyPrice;
 	}
 
-	public Long getProfit() {
+	public Double getProfit() {
 		return profit;
 	}
 
-	public void setProfit(Long profit) {
+	public void setProfit(Double profit) {
 		this.profit = profit;
 	}
 
-	public Long getLoss() {
+	public Double getLoss() {
 		return loss;
 	}
 
-	public void setLoss(Long loss) {
+	public void setLoss(Double loss) {
 		this.loss = loss;
 	}
 
