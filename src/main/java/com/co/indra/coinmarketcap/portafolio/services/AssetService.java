@@ -4,8 +4,10 @@ import com.co.indra.coinmarketcap.portafolio.config.ErrorCodes;
 import com.co.indra.coinmarketcap.portafolio.exceptions.BusinessException;
 import com.co.indra.coinmarketcap.portafolio.exceptions.NotFoundException;
 import com.co.indra.coinmarketcap.portafolio.models.entities.Asset;
+import com.co.indra.coinmarketcap.portafolio.models.entities.Transaction;
 import com.co.indra.coinmarketcap.portafolio.repository.AssetRepository;
 import com.co.indra.coinmarketcap.portafolio.repository.PortfolioRepository;
+import com.co.indra.coinmarketcap.portafolio.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,16 +20,24 @@ public class AssetService {
     @Autowired
     PortfolioRepository portfolioRepository;
 
+    @Autowired
+    TransactionRepository transactionRepository;
+
     public void createAsset(Asset asset, int idPortfolio){
         if(portfolioRepository.findByPortfolioId(idPortfolio).isEmpty()){
             throw new NotFoundException(ErrorCodes.PORTFOLIO_DOES_NOT_EXIST.getMessage());
         }
-        if(assetRepository.findById(asset.getId()).get(0).getIdPortfolio()==idPortfolio){
+        if(!assetRepository.findByPortfolioId(idPortfolio).isEmpty()){
             throw new BusinessException(ErrorCodes.PORTFOLIO_WITH_ASSET_ALREADY_EXISTS);
         }
+        assetRepository.createAsset(asset, idPortfolio);
 
-        assetRepository.createAsset(asset);
-
+    }
+    public void addTransactionToAsset(Transaction transaction, int idAsset){
+        if(assetRepository.findById(idAsset).isEmpty()){
+            throw new NotFoundException(ErrorCodes.ASSET_NOT_EXIST.getMessage());
+        }
+        transactionRepository.addTransactionToAsset(transaction, idAsset);
     }
 
 }

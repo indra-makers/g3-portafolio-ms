@@ -11,15 +11,15 @@ public class Transaction implements Serializable {
 
 	private String type;
 
-	private Long price;
+	private Double price;
 
 	private Date dateTime;
 
-	private Long fee;
+	private Double fee;
 
 	private String notes;
 
-	private Long amount;
+	private Double amount;
 
 	public Transaction() {
 
@@ -49,11 +49,11 @@ public class Transaction implements Serializable {
 		this.type = type;
 	}
 
-	public Long getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(Long price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 
@@ -65,11 +65,11 @@ public class Transaction implements Serializable {
 		this.dateTime = dateTime;
 	}
 
-	public Long getFee() {
+	public Double getFee() {
 		return fee;
 	}
 
-	public void setFee(Long fee) {
+	public void setFee(Double fee) {
 		this.fee = fee;
 	}
 
@@ -81,11 +81,11 @@ public class Transaction implements Serializable {
 		this.notes = notes;
 	}
 
-	public Long getAmount() {
+	public Double getAmount() {
 		return amount;
 	}
 
-	public void setAmount(Long amount) {
+	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
 

@@ -40,19 +40,24 @@ public class AssetRepository {
 	@Autowired
 	private JdbcTemplate template;
 
-	public void createAsset(@NotNull Asset asset){
+	public void createAsset(@NotNull Asset asset,int idPortfolio){
 		template.update("INSERT INTO tbl_assets(id_portfolio, accouting ," +
 				"name_asset,quantity,price,daily_variation,holding, avg_buy_price, profit ," +
-				"loss) values(?,?,?,?,?,?,?,?,?,?)", asset.getIdPortfolio(),
+				"loss) values(?,?,?,?,?,?,?,?,?,?)", idPortfolio,
 				asset.getAccouting(), asset.getNameAsset(), asset.getQuantity(), asset.getPrice(),
 				asset.getDailyVariation(), asset.getHolding(), asset.getAvgBuyPrice(), asset.getProfit(),
 				asset.getLoss());
 	}
 
-	public List<Asset> findById(int id){
+	public List<Asset> findByPortfolioId(int idPortfolio){
 		return template.query(
 				"SELECT * FROM tbl_assets WHERE id_portfolio=?",
-				new AssetRowMapper(), id
-		);
+				new AssetRowMapper(), idPortfolio);
+	}
+
+	public List<Asset> findById(int idAsset){
+		return template.query(
+				"SELECT * FROM tbl_assets WHERE id_assets=?",
+				new AssetRowMapper(), idAsset);
 	}
 }
