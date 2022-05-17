@@ -1,7 +1,5 @@
 package com.co.indra.coinmarketcap.portafolio.exceptions;
 
-import java.sql.SQLException;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,15 +8,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.co.indra.coinmarketcap.portafolio.models.responses.ErrorResponse;
 
-
 @ControllerAdvice
 public class CustomExceptionHandler {
-	
-	 @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	    @ResponseBody
-	    @ExceptionHandler(SQLException.class)
-	    public ErrorResponse handleException(SQLException exception) {
-	        return new ErrorResponse("500", "the portfolio name is already in use");
-	    }
+
+	@ResponseStatus(HttpStatus.PRECONDITION_FAILED)
+	@ResponseBody // que la respuesta va a ser personalizada.
+	@ExceptionHandler(BusinessException.class)
+	public ErrorResponse handleBusinessException(BusinessException exception) {
+		return new ErrorResponse(exception.getCode(), exception.getMessage());
+	}
 
 }

@@ -10,11 +10,20 @@ public class Portfolio implements Serializable {
 
 	private int idUser;
 
-	private Long balance;
+	private double balance;
 
 	public Portfolio() {
 		super();
 	}
+	
+
+	public Portfolio(String name, int idUser, double balance) {
+		super();
+		this.name = name;
+		this.idUser = idUser;
+		this.balance = balance;
+	}
+
 
 	public int getId() {
 		return id;
@@ -40,11 +49,11 @@ public class Portfolio implements Serializable {
 		this.idUser = idUser;
 	}
 
-	public Long getBalance() {
+	public double getBalance() {
 		return balance;
 	}
 
-	public void setBalance(Long balance) {
+	public void setBalance(double balance) {
 		this.balance = balance;
 	}
 
