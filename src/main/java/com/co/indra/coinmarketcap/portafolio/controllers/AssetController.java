@@ -11,11 +11,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(Routes.PORTFOLIO_PATH)
 public class AssetController {
 
-    @Autowired
-    AssetController assetController;
 
     @Autowired
-    AssetService assetService;
+    private AssetService assetService;
 
     @PostMapping(Routes.PORTFOLIO_ID)
     public void createAsset(@RequestBody Asset asset, @PathVariable("idPortfolio") int idPortfolio){
