@@ -18,4 +18,11 @@ public class CustomExceptionHandler {
 		return new ErrorResponse(exception.getCode(), exception.getMessage());
 	}
 
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ResponseBody // que la respuesta va a ser personalizada.
+	@ExceptionHandler(NotFoundException.class)
+	public ErrorResponse handleBusinessException(NotFoundException exception) {
+		return new ErrorResponse("NOT FOUND", exception.getMessage());
+	}
+
 }
