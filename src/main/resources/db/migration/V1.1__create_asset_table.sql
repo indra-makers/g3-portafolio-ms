@@ -4,11 +4,11 @@ create table tbl_assets(
 	accouting int not null,
 	name_asset varchar(50) not null,
 	quantity int not null,
-	price decimal(4,2) not null,
-	daily_variation decimal(4,2) not null,
-	holding decimal(4,2) not null,
-	avg_buy_price decimal(4,2) not null,
-	profit decimal(4,2) not null,
-	loss decimal(4,2) not null,
+	price double precision not null,
+	daily_variation double precision not null,
+	holding double precision not null,
+	avg_buy_price double precision not null,
+	profit double precision not null,
+	loss double precision not null,
 	foreign key(id_portfolio) references tbl_portfolio(id_portfolio)
 )

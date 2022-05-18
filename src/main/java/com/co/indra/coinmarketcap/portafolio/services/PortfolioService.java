@@ -25,7 +25,6 @@ public class PortfolioService {
 		} else {
 			portfolioRepository.create(portfolio);
 		}
-
 	}
 
 	public List<Portfolio> getPorfolioByUser(int idUser) {

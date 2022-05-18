@@ -2,11 +2,12 @@ create table tbl_assets_transaction(
 	id_transaction serial primary key,
 	id_asset int not null,
 	type char(25),
-	price_transaction decimal(4,2),
+	price_transaction double precision,
 	date_time date,
-	fee decimal(4,2),
+	fee double precision,
 	notes varchar(100),
-	amount decimal(4,2),
+	quantity int not null,
+	amount double precision,
 	foreign key(id_asset) references tbl_assets(id_assets)
 	
 )

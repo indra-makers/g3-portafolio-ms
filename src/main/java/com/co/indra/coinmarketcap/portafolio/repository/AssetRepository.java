@@ -1,6 +1,8 @@
 package com.co.indra.coinmarketcap.portafolio.repository;
 
 import com.co.indra.coinmarketcap.portafolio.models.entities.Asset;
+import com.co.indra.coinmarketcap.portafolio.models.entities.Portfolio;
+import com.co.indra.coinmarketcap.portafolio.models.entities.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -12,7 +14,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 class AssetRowMapper implements RowMapper<Asset> {
-
 	@Override
 	public Asset mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Asset asset = new Asset();
@@ -29,7 +30,6 @@ class AssetRowMapper implements RowMapper<Asset> {
 		asset.setLoss(rs.getDouble("loss"));
 		return asset;
 	}
-
 }
 
 @Repository
@@ -44,12 +44,12 @@ public class AssetRepository {
 						+ "name_asset,quantity,price,daily_variation,holding, avg_buy_price, profit ,"
 						+ "loss) values(?,?,?,?,?,?,?,?,?,?)",
 				idPortfolio, asset.getAccouting(), asset.getNameAsset(), asset.getQuantity(), asset.getPrice(),
-				asset.getDailyVariation(), asset.getHolding(), asset.getAvgBuyPrice(), asset.getProfit(),
+				asset.getDailyVariation(), (asset.getPrice()*asset.getQuantity()), asset.getAvgBuyPrice(), asset.getProfit(),
 				asset.getLoss());
 	}
 
-	public List<Asset> findByPortfolioId(int idPortfolio) {
-		return template.query("SELECT * FROM tbl_assets WHERE id_portfolio=?", new AssetRowMapper(), idPortfolio);
+	public List<Asset> findByPortfolioIdNameAsset(int idPortfolio, String nameAsset) {
+		return template.query("SELECT * FROM tbl_assets WHERE id_portfolio=? and name_asset = ?", new AssetRowMapper(), idPortfolio, nameAsset);
 	}
 
 	public List<Asset> findById(int idAsset) {
@@ -57,8 +57,20 @@ public class AssetRepository {
 	}
 
 	public int delete(int id) {
-
 		return template.update("DELETE FROM tbl_assets where id_assets=?", id);
+	}
 
+	public void modifyAvgBuyPrice(int idAsset){
+		int quantityTotal = 0;
+		Double amountTotal = 0d;
+		List<Transaction> transactions = template.query("select id_asset, type, price_transaction, date_time, fee, notes, quantity, amount from tbl_assets_transaction where id_asset=?",
+				new TransactionRowMapper(), idAsset);
+
+		for (int i=0; i<transactions.size(); i++) {
+			quantityTotal = quantityTotal + transactions.get(i).getQuantity();
+			amountTotal = amountTotal + transactions.get(i).getAmount();
+ 		}
+		template.update("UPDATE tbl_assets SET avg_buy_price  = ? WHERE id_assets = ?",
+				(amountTotal/quantityTotal), idAsset);
 	}
 }
