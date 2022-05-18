@@ -38,7 +38,7 @@ public class PortfolioController {
 
 	}
 	@PostMapping(Routes.PORTFOLIO_ID)
-	public void createAsset(@RequestBody Asset asset, @PathVariable("idPortfolio") int idPortfolio){
+	public void createAssetToPortfolio(@RequestBody Asset asset, @PathVariable("idPortfolio") int idPortfolio){
 		assetService.createAsset(asset,idPortfolio);
 	}
 

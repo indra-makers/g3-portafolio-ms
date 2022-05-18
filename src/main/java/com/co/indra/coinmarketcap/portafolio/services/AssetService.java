@@ -11,6 +11,11 @@ import com.co.indra.coinmarketcap.portafolio.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Date;
+
 @Service
 public class AssetService {
 
@@ -27,18 +32,33 @@ public class AssetService {
 		if (portfolioRepository.findByPortfolioId(idPortfolio).isEmpty()) {
 			throw new NotFoundException(ErrorCodes.PORTFOLIO_DOES_NOT_EXIST.getMessage());
 		}
-		if (!assetRepository.findByPortfolioId(idPortfolio).isEmpty()) {
+		if (!assetRepository.findByPortfolioIdNameAsset(idPortfolio, asset.getNameAsset()).isEmpty()) {
 			throw new BusinessException(ErrorCodes.PORTFOLIO_WITH_ASSET_ALREADY_EXISTS);
 		}
 		assetRepository.createAsset(asset, idPortfolio);
+		portfolioRepository.modifyBalancePortfolio(idPortfolio,(asset.getPrice()*asset.getQuantity()));
 
 	}
 
-	public void addTransactionToAsset(Transaction transaction, int idAsset) {
+	public void addTransactionToAsset(Transaction transaction, int idAsset){
 		if (assetRepository.findById(idAsset).isEmpty()) {
 			throw new NotFoundException(ErrorCodes.ASSET_NOT_EXIST.getMessage());
 		}
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-dd-MM");
+		Date dateTransaction = null;
+		try {
+			dateTransaction = format.parse(transaction.getDateTime());
+		} catch (ParseException e) {
+			throw new RuntimeException(e);
+		}
+		Date currentDate = new Date();
+
+		if(dateTransaction.compareTo(currentDate) > 0) {
+			throw new BusinessException(ErrorCodes.DATE_DONT_MUST_BE_GREATER);
+		}
+
 		transactionRepository.addTransactionToAsset(transaction, idAsset);
+		assetRepository.modifyAvgBuyPrice(idAsset);
 	}
 
 	public int delete(int id) {

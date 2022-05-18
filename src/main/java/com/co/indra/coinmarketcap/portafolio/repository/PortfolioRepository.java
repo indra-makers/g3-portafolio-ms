@@ -3,6 +3,7 @@ package com.co.indra.coinmarketcap.portafolio.repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -15,7 +16,7 @@ class PortfolioRowMapper implements RowMapper<Portfolio> {
 		Portfolio portfolio = new Portfolio();
 		portfolio.setName(rs.getString("name_portfolio"));
 		portfolio.setIdUser(rs.getInt("id_user"));
-		portfolio.setBalance(rs.getLong("balance_portfolio"));
+		portfolio.setBalance(rs.getDouble("balance_portfolio"));
 		return portfolio;
 	}
 }
@@ -46,6 +47,14 @@ public class PortfolioRepository {
 	public List<Portfolio> getPorfolio(int idUser) {
 		return template.query("select id_user, name_portfolio, balance_portfolio from tbl_portfolio where id_user=?",
 				new PortfolioRowMapper(), idUser);
+	}
+
+	public void modifyBalancePortfolio(int idPortfolio,Double value){
+		List<Portfolio> portfolios= template.query("select id_user, name_portfolio, balance_portfolio from tbl_portfolio where id_portfolio=?",
+				new PortfolioRowMapper(), idPortfolio);
+
+		template.update("UPDATE tbl_portfolio SET balance_portfolio  = ? WHERE id_portfolio  = ?",
+				portfolios.get(0).getBalance()+value, idPortfolio);
 	}
 
 }

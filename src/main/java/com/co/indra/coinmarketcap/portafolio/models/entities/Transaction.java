@@ -1,5 +1,6 @@
 package com.co.indra.coinmarketcap.portafolio.models.entities;
 
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -10,14 +11,16 @@ public class Transaction implements Serializable {
 	private int idAsset;
 
 	private String type;
-
+	@Min(1)
 	private Double price;
 
-	private Date dateTime;
+	private String dateTime;
 
 	private Double fee;
 
 	private String notes;
+	@Min(1)
+	private int quantity;
 
 	private Double amount;
 
@@ -57,11 +60,11 @@ public class Transaction implements Serializable {
 		this.price = price;
 	}
 
-	public Date getDateTime() {
+	public String getDateTime() {
 		return dateTime;
 	}
 
-	public void setDateTime(Date dateTime) {
+	public void setDateTime(String dateTime) {
 		this.dateTime = dateTime;
 	}
 
@@ -89,4 +92,11 @@ public class Transaction implements Serializable {
 		this.amount = amount;
 	}
 
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
 }
