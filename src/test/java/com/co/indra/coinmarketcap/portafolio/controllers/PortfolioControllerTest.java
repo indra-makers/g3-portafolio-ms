@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import com.co.indra.coinmarketcap.portafolio.config.Routes;
 import com.co.indra.coinmarketcap.portafolio.models.entities.Portfolio;
 import com.co.indra.coinmarketcap.portafolio.models.responses.ErrorResponse;
+import com.co.indra.coinmarketcap.portafolio.repository.AssetRepository;
 import com.co.indra.coinmarketcap.portafolio.repository.PortfolioRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
@@ -15,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
@@ -36,6 +36,8 @@ public class PortfolioControllerTest {
 	@Autowired
 	private PortfolioRepository portfolioRepository;
 	
+
+	
 	@Test
     public void addPortafolioHappyPath() throws Exception {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
@@ -43,7 +45,7 @@ public class PortfolioControllerTest {
                 .content("{\n" +
                         "    \"name\": \"my_coins2\",\n" +
                         "    \"idUser\": \"1\",\n" +
-                        "    \"balance\": \"45\"\n" +
+                        "    \"balance\": \"0\"\n" +
                         "}").contentType(MediaType.APPLICATION_JSON);
 
         MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
@@ -56,7 +58,7 @@ public class PortfolioControllerTest {
 
         Assertions.assertEquals("my_coins2", portafolioToAssert.getName());
         Assertions.assertEquals(1, portafolioToAssert.getIdUser());
-        Assertions.assertEquals(45, portafolioToAssert.getBalance());
+        Assertions.assertEquals(0, portafolioToAssert.getBalance());
     }
 	
 	@Test
@@ -70,7 +72,7 @@ public class PortfolioControllerTest {
                 .content("{\n" +
                         "    \"name\": \"my_coins\",\n" +
                         "    \"idUser\": \"1\",\n" +
-                        "    \"balance\": \"45.45\"\n" +
+                        "    \"balance\": \"0.0\"\n" +
                         "}").contentType(MediaType.APPLICATION_JSON);
 
         MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
@@ -98,7 +100,7 @@ public class PortfolioControllerTest {
         Assertions.assertEquals(200, response.getStatus());
 
         Portfolio[] portfolio = objectMapper.readValue(response.getContentAsString(), Portfolio[].class);
-        Assertions.assertEquals(4, portfolio.length);
+        Assertions.assertEquals(2, portfolio.length);
     }
 
 }

@@ -9,5 +9,5 @@ create table tbl_assets_transaction(
 	quantity int not null,
 	amount double precision,
 	foreign key(id_asset) references tbl_assets(id_assets)
-	
+	ON DELETE CASCADE
 )
