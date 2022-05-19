@@ -1,102 +1,105 @@
 package com.co.indra.coinmarketcap.portafolio.models.entities;
 
-import javax.validation.constraints.Min;
+import javax.validation.constraints.Past;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
 
 public class Transaction implements Serializable {
 
-	private int id;
+    private int id;
 
-	private int idAsset;
+    private int idAsset;
 
-	private String type;
-	@Min(1)
-	private Double price;
+    private String type;
 
-	private String dateTime;
+    private Double price;
+    @Past
+    private Date dateTime;
 
-	private Double fee;
+    private Double fee;
 
-	private String notes;
-	@Min(1)
-	private int quantity;
+    private String notes;
 
-	private Double amount;
+    private int quantity;
 
-	public Transaction() {
+    private Double amount;
 
-	}
+    public Transaction() {
 
-	public int getId() {
-		return id;
-	}
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public int getIdAsset() {
-		return idAsset;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setIdAsset(int idAsset) {
-		this.idAsset = idAsset;
-	}
+    public int getIdAsset() {
+        return idAsset;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public void setIdAsset(int idAsset) {
+        this.idAsset = idAsset;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public Double getPrice() {
-		return price;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public void setPrice(Double price) {
-		this.price = price;
-	}
+    public Double getPrice() {
+        return price;
+    }
 
-	public String getDateTime() {
-		return dateTime;
-	}
+    public void setPrice(Double price) {
+        this.price = price;
+    }
 
-	public void setDateTime(String dateTime) {
-		this.dateTime = dateTime;
-	}
+    public Date getDateTime() {
+        return dateTime;
+    }
 
-	public Double getFee() {
-		return fee;
-	}
+    public void setDateTime(Date dateTime) {
+        this.dateTime = dateTime;
+    }
 
-	public void setFee(Double fee) {
-		this.fee = fee;
-	}
+    public Double getFee() {
+        return fee;
+    }
 
-	public String getNotes() {
-		return notes;
-	}
+    public void setFee(Double fee) {
+        this.fee = fee;
+    }
 
-	public void setNotes(String notes) {
-		this.notes = notes;
-	}
+    public String getNotes() {
+        return notes;
+    }
 
-	public Double getAmount() {
-		return amount;
-	}
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
 
-	public void setAmount(Double amount) {
-		this.amount = amount;
-	}
+    public Double getAmount() {
+        return amount;
+    }
 
-	public int getQuantity() {
-		return quantity;
-	}
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
 
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 }

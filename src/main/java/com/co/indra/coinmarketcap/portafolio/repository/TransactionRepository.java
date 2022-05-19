@@ -9,9 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
+import java.util.List;
 
 
 class TransactionRowMapper implements RowMapper<Transaction> {
@@ -21,7 +19,7 @@ class TransactionRowMapper implements RowMapper<Transaction> {
 		transaction.setIdAsset(rs.getInt("id_asset"));
 		transaction.setType(rs.getString("type"));
 		transaction.setPrice(rs.getDouble("price_transaction"));
-		transaction.setDateTime(rs.getString("date_time"));
+		transaction.setDateTime(rs.getDate("date_time"));
 		transaction.setFee(rs.getDouble("fee"));
 		transaction.setNotes(rs.getString("notes"));
 		transaction.setQuantity(rs.getInt("quantity"));
@@ -37,12 +35,13 @@ public class TransactionRepository {
 	private JdbcTemplate template;
 
 	public void addTransactionToAsset(Transaction transaction, int idAsset) {
-		try {
-			template.update("INSERT INTO tbl_assets_transaction(id_asset,type,price_transaction,date_time,fee,notes,quantity,amount) values (?,?,?,?,?,?,?,?)",
-					idAsset, transaction.getType(), transaction.getPrice(), new SimpleDateFormat("yyyy-MM-dd").parse(transaction.getDateTime()), transaction.getFee(), transaction.getNotes(), transaction.getQuantity(), transaction.getPrice()*transaction.getQuantity());
-		} catch (ParseException e) {
-			throw new RuntimeException(e);
-		}
+		template.update("INSERT INTO tbl_assets_transaction(id_asset,type,price_transaction,date_time,fee,notes,quantity,amount) values (?,?,?,?,?,?,?,?)",
+				idAsset, transaction.getType(), transaction.getPrice(), transaction.getDateTime(), transaction.getFee(), transaction.getNotes(), transaction.getQuantity(), transaction.getPrice()*transaction.getQuantity());
+	}
+
+	public List<Transaction> getTransactionByIdAsset(int idAsset){
+		return template.query("select id_asset, type, price_transaction, date_time, fee, notes, quantity, amount from tbl_assets_transaction where id_asset=?",
+				new TransactionRowMapper(), idAsset);
 	}
 
 }
