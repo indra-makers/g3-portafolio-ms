@@ -55,7 +55,7 @@ public class AssetControllerTest {
         MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
         Assertions.assertEquals(200, response.getStatus());
 
-        List<Asset> assets = assetRepository.findByName("TVQ");
+        List<Asset> assets = assetRepository.findByPortfolioIdNameAsset(1,"TVQ");
         Assertions.assertEquals(1, assets.size());
 
         Asset AssetToAssert = assets.get(0);
