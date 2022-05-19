@@ -4,57 +4,57 @@ import java.io.Serializable;
 
 public class Portfolio implements Serializable {
 
-	private int id;
+    private int id;
 
-	private String name;
+    private String name;
 
-	private int idUser;
+    private int idUser;
 
-	private double balance;
+    private double balance;
 
-	public Portfolio() {
-		super();
-	}
-	
-
-	public Portfolio(String name, int idUser, double balance) {
-		super();
-		this.name = name;
-		this.idUser = idUser;
-		this.balance = balance;
-	}
+    public Portfolio() {
+        super();
+    }
 
 
-	public int getId() {
-		return id;
-	}
+    public Portfolio(String name, int idUser, double balance) {
+        super();
+        this.name = name;
+        this.idUser = idUser;
+        this.balance = balance;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
 
-	public String getName() {
-		return name;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public int getIdUser() {
-		return idUser;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setIdUser(int idUser) {
-		this.idUser = idUser;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public double getBalance() {
-		return balance;
-	}
+    public int getIdUser() {
+        return idUser;
+    }
 
-	public void setBalance(double balance) {
-		this.balance = balance;
-	}
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
 
 }

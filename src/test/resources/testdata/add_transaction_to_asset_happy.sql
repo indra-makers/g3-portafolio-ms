@@ -1,2 +1,2 @@
 insert into tbl_portfolio(id_portfolio, name_portfolio,id_user,balance_portfolio) values(999, 'duende', 1, 458.45);
-insert into tbl_assets(id_assets, id_portfolio, accouting, name_asset, quantity, price, daily_variation, holding, avg_buy_price, profit, loss) values(666, 999, 4, 'pruebaa',5,20,5,5,4,5,4);
+insert into tbl_assets(id_assets, id_portfolio, accouting, name_asset, quantity, price, daily_variation, holding, avg_buy_price, profit, loss) values(666, 999, 4, 'pruebaa',5,20,5,5,0,5,4);

@@ -14,26 +14,26 @@ import com.co.indra.coinmarketcap.portafolio.repository.PortfolioRepository;
 @Service
 public class PortfolioService {
 
-	@Autowired
-	private PortfolioRepository portfolioRepository;
+    @Autowired
+    private PortfolioRepository portfolioRepository;
 
-	public void createPortfolio(Portfolio portfolio) {
-		List<Portfolio> portfolioByname = portfolioRepository.findByNameAndUsername(portfolio.getIdUser(),
-				portfolio.getName());
-		if (!portfolioByname.isEmpty()) {
-			throw new BusinessException(ErrorCodes.NAME_ALREADY_IN_USE);
-		} else {
-			portfolioRepository.create(portfolio);
-		}
-	}
+    public void createPortfolio(Portfolio portfolio) {
+        List<Portfolio> portfolioByname = portfolioRepository.findByNameAndUsername(portfolio.getIdUser(),
+                portfolio.getName());
+        if (!portfolioByname.isEmpty()) {
+            throw new BusinessException(ErrorCodes.NAME_ALREADY_IN_USE);
+        } else {
+            portfolioRepository.create(portfolio);
+        }
+    }
 
-	public List<Portfolio> getPorfolioByUser(int idUser) {
+    public List<Portfolio> getPorfolioByUser(int idUser) {
 
-		if (portfolioRepository.getPorfolio(idUser).isEmpty()) {
-			throw new NotFoundException(ErrorCodes.USER_NOT_EXIST.getMessage());
-		} else {
-			return portfolioRepository.getPorfolio(idUser);
-		}
+        if (portfolioRepository.getPorfolio(idUser).isEmpty()) {
+            throw new NotFoundException(ErrorCodes.USER_NOT_EXIST.getMessage());
+        } else {
+            return portfolioRepository.getPorfolio(idUser);
+        }
 
-	}
+    }
 }
