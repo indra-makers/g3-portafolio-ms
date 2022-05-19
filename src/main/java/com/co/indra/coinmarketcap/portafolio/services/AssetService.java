@@ -36,25 +36,13 @@ public class AssetService {
 			throw new BusinessException(ErrorCodes.PORTFOLIO_WITH_ASSET_ALREADY_EXISTS);
 		}
 		assetRepository.createAsset(asset, idPortfolio);
-		portfolioRepository.modifyBalancePortfolio(idPortfolio,(asset.getPrice()*asset.getQuantity()));
+		portfolioRepository.modifyBalancePortfolio(idPortfolio, (asset.getPrice() * asset.getQuantity()));
 
 	}
 
-	public void addTransactionToAsset(Transaction transaction, int idAsset){
+	public void addTransactionToAsset(Transaction transaction, int idAsset) {
 		if (assetRepository.findById(idAsset).isEmpty()) {
 			throw new NotFoundException(ErrorCodes.ASSET_NOT_EXIST.getMessage());
-		}
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-dd-MM");
-		Date dateTransaction = null;
-		try {
-			dateTransaction = format.parse(transaction.getDateTime());
-		} catch (ParseException e) {
-			throw new RuntimeException(e);
-		}
-		Date currentDate = new Date();
-
-		if(dateTransaction.compareTo(currentDate) > 0) {
-			throw new BusinessException(ErrorCodes.DATE_DONT_MUST_BE_GREATER);
 		}
 
 		transactionRepository.addTransactionToAsset(transaction, idAsset);

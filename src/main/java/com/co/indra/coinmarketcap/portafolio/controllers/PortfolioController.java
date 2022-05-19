@@ -24,8 +24,6 @@ public class PortfolioController {
 
 	@Autowired
 	private PortfolioService portfolioService;
-	@Autowired
-	private AssetService assetService;
 
 	@PostMapping
 	public void create(@RequestBody Portfolio portfolio) {
@@ -36,10 +34,6 @@ public class PortfolioController {
 	public List<Portfolio> getDeviceLocation(@PathVariable(name = "id") int id) {
 		return portfolioService.getPorfolioByUser(id);
 
-	}
-	@PostMapping(Routes.PORTFOLIO_ID)
-	public void createAssetToPortfolio(@RequestBody Asset asset, @PathVariable("idPortfolio") int idPortfolio){
-		assetService.createAsset(asset,idPortfolio);
 	}
 
 }
