@@ -36,8 +36,7 @@ public class PortfolioControllerTest {
 	@Autowired
 	private PortfolioRepository portfolioRepository;
 	
-	@Autowired
-	private AssetRepository assetRepository;
+
 	
 	@Test
     public void addPortafolioHappyPath() throws Exception {
@@ -46,7 +45,7 @@ public class PortfolioControllerTest {
                 .content("{\n" +
                         "    \"name\": \"my_coins2\",\n" +
                         "    \"idUser\": \"1\",\n" +
-                        "    \"balance\": \"45\"\n" +
+                        "    \"balance\": \"0\"\n" +
                         "}").contentType(MediaType.APPLICATION_JSON);
 
         MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
@@ -59,7 +58,7 @@ public class PortfolioControllerTest {
 
         Assertions.assertEquals("my_coins2", portafolioToAssert.getName());
         Assertions.assertEquals(1, portafolioToAssert.getIdUser());
-        Assertions.assertEquals(45, portafolioToAssert.getBalance());
+        Assertions.assertEquals(0, portafolioToAssert.getBalance());
     }
 	
 	@Test
@@ -73,7 +72,7 @@ public class PortfolioControllerTest {
                 .content("{\n" +
                         "    \"name\": \"my_coins\",\n" +
                         "    \"idUser\": \"1\",\n" +
-                        "    \"balance\": \"45.45\"\n" +
+                        "    \"balance\": \"0.0\"\n" +
                         "}").contentType(MediaType.APPLICATION_JSON);
 
         MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();

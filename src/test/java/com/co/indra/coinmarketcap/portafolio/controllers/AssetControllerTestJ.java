@@ -93,7 +93,7 @@ public class AssetControllerTestJ {
 	public void deleteAssets() throws Exception {
 		// ----la ejecucion de la prueba misma--------------
 		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.delete(Routes.ASSETS_PATH + Routes.DELETE_ASSETS,
-				2);
+				1);
 
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 		// ------------ las verificaciones--------------------
