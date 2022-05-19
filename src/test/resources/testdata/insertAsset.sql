@@ -1,0 +1,2 @@
+INSERT INTO public.tbl_portfolio(id_portfolio, name_portfolio, id_user, balance_portfolio) values(1, 'AAB', 12, 4.2);
+INSERT INTO public.tbl_assets(id_assets, id_portfolio, accouting, name_asset, quantity, price, daily_variation, holding, avg_buy_price, profit, loss) values(1,1,5,'TVQ',1,1087.23,50.50,3,20.20,10.10,30.30);
