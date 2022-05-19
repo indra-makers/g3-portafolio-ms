@@ -101,7 +101,7 @@ public class PortfolioControllerTest {
         Assertions.assertEquals(200, response.getStatus());
 
         Portfolio[] portfolio = objectMapper.readValue(response.getContentAsString(), Portfolio[].class);
-        Assertions.assertEquals(4, portfolio.length);
+        Assertions.assertEquals(7, portfolio.length);
     }
 
 }

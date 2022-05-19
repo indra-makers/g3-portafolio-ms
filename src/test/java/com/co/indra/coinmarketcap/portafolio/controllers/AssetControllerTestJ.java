@@ -86,22 +86,18 @@ public class AssetControllerTestJ {
         Assertions.assertEquals(400, response.getStatus());
     }
 
-    @Test
-    @Sql("/testdata/add_transaction_to_asset_happy.sql")
-    public void addTransactionToAssetBadDate() throws Exception {
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .post(Routes.ASSETS_PATH+Routes.ADD_TRANSACTION_TO_ASSET, 666)
-                .content("{\n" +
-                        "    \"type\": \"Buy\",\n" +
-                        "    \"price\": 1,\n" +
-                        "    \"dateTime\": \"2025-20-05\",\n" +
-                        "    \"fee\": 30.30,\n" +
-                        "    \"notes\": \"ADSERTEET WEQ crte\",\n" +
-                        "    \"quantity\": 1,\n" +
-                        "    \"amount\": 15\n" +
-                        "}").contentType(MediaType.APPLICATION_JSON);
+ 
+    
+	@Test
+	@Sql("/testdata/insert_assets.sql")
+	public void deleteAssets() throws Exception {
+		// ----la ejecucion de la prueba misma--------------
+		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.delete(Routes.ASSETS_PATH + Routes.DELETE_ASSETS,
+				2);
 
-        MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
-        Assertions.assertEquals(412, response.getStatus());
-    }
+		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
+		// ------------ las verificaciones--------------------
+		Assertions.assertEquals(200, response.getStatus());
+
+	}
 }
