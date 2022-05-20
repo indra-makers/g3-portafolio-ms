@@ -96,7 +96,7 @@ public class PortfolioControllerTest {
     public void getPortafoliosByUser() throws Exception {
         //----la ejecucion de la prueba misma--------------
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .get(Routes.PORTFOLIO_PATH + Routes.PORTFOLIO_USER, 1)
+                .get(Routes.PORTFOLIO_PATH + "/{idUser}", 1)
                 .contentType(MediaType.APPLICATION_JSON);
 
         MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();

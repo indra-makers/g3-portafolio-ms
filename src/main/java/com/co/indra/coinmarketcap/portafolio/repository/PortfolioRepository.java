@@ -13,50 +13,48 @@ import org.springframework.stereotype.Repository;
 import com.co.indra.coinmarketcap.portafolio.models.entities.Portfolio;
 
 class PortfolioRowMapper implements RowMapper<Portfolio> {
-    @Override
-    public Portfolio mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Portfolio portfolio = new Portfolio();
-        portfolio.setName(rs.getString("name_portfolio"));
-        portfolio.setIdUser(rs.getInt("id_user"));
-        portfolio.setBalance(rs.getDouble("balance_portfolio"));
-        return portfolio;
-    }
+	@Override
+	public Portfolio mapRow(ResultSet rs, int rowNum) throws SQLException {
+		Portfolio portfolio = new Portfolio();
+		portfolio.setName(rs.getString("name_portfolio"));
+		portfolio.setIdUser(rs.getInt("id_user"));
+		portfolio.setBalance(rs.getDouble("balance_portfolio"));
+		return portfolio;
+	}
 }
 
 @Repository
 public class PortfolioRepository {
-    @Autowired
-    private JdbcTemplate template;
+	@Autowired
+	private JdbcTemplate template;
 
-    public void create(Portfolio portfolio) {
-        template.update("INSERT INTO tbl_portfolio(name_portfolio,id_user,balance_portfolio) values (?,?,?)",
-                portfolio.getName(), portfolio.getIdUser(), portfolio.getBalance());
-    }
+	public void create(Portfolio portfolio) {
+		template.update("INSERT INTO tbl_portfolio(name_portfolio,id_user,balance_portfolio) values (?,?,?)",
+				portfolio.getName(), portfolio.getIdUser(), portfolio.getBalance());
+	}
 
-    public List<Portfolio> findByPortfolioId(int id) {
-        return template.query(
-                "select * from tbl_portfolio where id_portfolio = ?",
-                new PortfolioRowMapper(), id
-        );
-    }
+	public List<Portfolio> findByPortfolioId(int id) {
+		return template.query("select * from tbl_portfolio where id_portfolio = ?", new PortfolioRowMapper(), id);
+	}
 
-    public List<Portfolio> findByNameAndUsername(int idUser, String name) {
-        return template.query(
-                "select id_user, name_portfolio, balance_portfolio from tbl_portfolio where id_user = ? and name_portfolio = ?",
-                new PortfolioRowMapper(), idUser, name);
-    }
+	public List<Portfolio> findByNameAndUsername(int idUser, String name) {
+		return template.query(
+				"select id_user, name_portfolio, balance_portfolio from tbl_portfolio where id_user = ? and name_portfolio = ?",
+				new PortfolioRowMapper(), idUser, name);
+	}
 
-    public List<Portfolio> getPorfolio(int idUser) {
-        return template.query("select id_user, name_portfolio, balance_portfolio from tbl_portfolio where id_user=?",
-                new PortfolioRowMapper(), idUser);
-    }
+	public List<Portfolio> getPorfolio(int idUser) {
+		return template.query("select id_user, name_portfolio, balance_portfolio from tbl_portfolio where id_user=?",
+				new PortfolioRowMapper(), idUser);
+	}
 
-    public void modifyBalancePortfolio(int idPortfolio, Double value) {
-        List<Portfolio> portfolios = template.query("select id_user, name_portfolio, balance_portfolio from tbl_portfolio where id_portfolio=?",
-                new PortfolioRowMapper(), idPortfolio);
+	public void modifyBalancePortfolio(int idPortfolio, Double value) {
+		List<Portfolio> portfolios = template.query(
+				"select id_user, name_portfolio, balance_portfolio from tbl_portfolio where id_portfolio=?",
+				new PortfolioRowMapper(), idPortfolio);
 
-        template.update("UPDATE tbl_portfolio SET balance_portfolio  = ? WHERE id_portfolio  = ?",
-                portfolios.get(0).getBalance() + value, idPortfolio);
-    }
+		template.update("UPDATE tbl_portfolio SET balance_portfolio  = ? WHERE id_portfolio  = ?",
+				portfolios.get(0).getBalance() + value, idPortfolio);
+	}
 
 }
