@@ -39,7 +39,7 @@ public class AssetControllerTest {
     @Sql("/testdata/addPortfolio.sql")
     public void createAssetHappyPath() throws Exception{
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .post(Routes.PORTFOLIO_PATH+Routes.PORTFOLIO_ID, 1)
+                .post(Routes.PORTFOLIO_PATH+Routes.PORTFOLIO_USERS, 1)
                 .content("{\n" +
                         "    \"accouting\": 5,\n" +
                         "    \"nameAsset\": \"TVQ\",\n" +
@@ -68,7 +68,7 @@ public class AssetControllerTest {
     @Sql("/testdata/insertAsset.sql")
     public void createAssetThatAlreadyExists() throws Exception{
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .post(Routes.PORTFOLIO_PATH+Routes.PORTFOLIO_ID, 1)
+                .post(Routes.PORTFOLIO_PATH+Routes.PORTFOLIO_USERS, 1)
                 .content("{\n" +
                         "    \"accouting\": 5,\n" +
                         "    \"nameAsset\": \"TVQ\",\n" +

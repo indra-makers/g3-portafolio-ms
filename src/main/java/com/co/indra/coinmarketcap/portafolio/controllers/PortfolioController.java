@@ -3,9 +3,9 @@ package com.co.indra.coinmarketcap.portafolio.controllers;
 import java.util.List;
 
 import com.co.indra.coinmarketcap.portafolio.models.entities.Asset;
-import com.co.indra.coinmarketcap.portafolio.models.entities.Transaction;<<<<<<<HEAD
-import com.co.indra.coinmarketcap.portafolio.models.responses.PortfolioDistribution;=======
-import com.co.indra.coinmarketcap.portafolio.models.responses.ListPortfolioResponse;>>>>>>>756e680(juanManuel-helperAssetValidate_url)
+import com.co.indra.coinmarketcap.portafolio.models.entities.Transaction;
+import com.co.indra.coinmarketcap.portafolio.models.responses.PortfolioDistribution;
+import com.co.indra.coinmarketcap.portafolio.models.responses.ListPortfolioResponse;
 import com.co.indra.coinmarketcap.portafolio.services.AssetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
 
 import com.co.indra.coinmarketcap.portafolio.config.Routes;
@@ -42,6 +41,21 @@ public class PortfolioController {
 	@GetMapping(Routes.PORTFOLIO_SUMARY)
 	public ListPortfolioResponse getPortfolioSumary(@PathVariable int idUsuario) {
 		return portfolioService.getSumary(idUsuario);
+	}
+
+	@PostMapping(Routes.PORTFOLIO_ASSETS)
+	public void createAssetToPortfolio(@RequestBody Asset asset, @PathVariable("idPortfolio") int idPortfolio) {
+		assetService.createAsset(asset, idPortfolio);
+	}
+
+	@GetMapping(Routes.PORTFOLIO_SUMARY)
+	public ListPortfolioResponse getPortfolioSumary(@PathVariable int idUsuario) {
+		return portfolioService.getSumary(idUsuario);
+	}
+
+	@GetMapping(Routes.PORTFOLIO_USERS)
+	public List<Portfolio> getPortfolio(@PathVariable int idUsuario) {
+		return portfolioService.getPorfolioByUser(idUsuario);
 	}
 
 	@GetMapping(Routes.PORTFOLIO_ID)
