@@ -121,4 +121,31 @@ public class AssetControllerTest {
         Assertions.assertEquals("THE FIRST TRANSACTION MUST BE BUY", error.getMessage());
     }
 
+    @Test
+    @Sql("/testdata/getAssetsInPortfolio.sql")
+    public void getAssetsInPortfolioHappyPath() throws Exception{
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get(Routes.PORTFOLIO_PATH+Routes.PORTFOLIO_ID, 1)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
+        Assertions.assertEquals(200, response.getStatus());
+
+        Asset[] assets = objectMapper.readValue(response.getContentAsString(), Asset[].class);
+        Assertions.assertEquals(3, assets.length);
+    }
+
+    @Test
+    public void getAssetInPortfolioThatDoesNotExist() throws Exception{
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get(Routes.PORTFOLIO_PATH+Routes.PORTFOLIO_ID, 1)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
+        Assertions.assertEquals(404, response.getStatus());
+
+        ErrorResponse error = objectMapper.readValue(response.getContentAsString(), ErrorResponse.class);
+        Assertions.assertEquals("PORTFOLIO WITH THIS ID DOES NOT EXISTS", error.getMessage());
+    }
+
 }

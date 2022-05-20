@@ -43,4 +43,10 @@ public class PortfolioController {
         assetService.createAsset(asset, idPortfolio);
     }
 
+
+    @GetMapping(Routes.PORTFOLIO_ID)
+    public List<Asset> getAssetsInPortfolio(@PathVariable(name = "idPortfolio") int id){
+        return assetService.getAssetsInPortfolio(id);
+    }
+
 }

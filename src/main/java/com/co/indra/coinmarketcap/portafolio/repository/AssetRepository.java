@@ -68,4 +68,8 @@ public class AssetRepository {
         template.update("UPDATE tbl_assets SET avg_buy_price  = ?, quantity = ?, holding = ? WHERE id_assets = ?",
                 (amountTotal / quantityTotal), transaction.getQuantity() + currentQuantity, (transaction.getQuantity() + currentQuantity) * currentPrice, idAsset);
     }
+
+    public List<Asset> findByPortfolioId(int idPortfolio) {
+        return template.query("SELECT * FROM tbl_assets WHERE id_portfolio=?", new AssetRowMapper(), idPortfolio);
+    }
 }
