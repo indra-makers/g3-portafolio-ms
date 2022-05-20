@@ -163,7 +163,6 @@ public class AssetControllerTestJ {
         Assertions.assertEquals(412, response.getStatus());
         String textResponse = response.getContentAsString();
         ErrorResponse error = objectMapper.readValue(textResponse, ErrorResponse.class);
-
         Assertions.assertEquals("007", error.getCode());
         Assertions.assertEquals("THE PRICE|QUANTITY SHOULD NOT BE LESS OR EQUAL TO 0", error.getMessage());
     }
