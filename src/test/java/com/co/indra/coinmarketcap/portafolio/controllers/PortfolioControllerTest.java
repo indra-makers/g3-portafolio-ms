@@ -10,6 +10,7 @@ import com.co.indra.coinmarketcap.portafolio.models.entities.Portfolio;
 import com.co.indra.coinmarketcap.portafolio.models.responses.AssetAvgDist;
 import com.co.indra.coinmarketcap.portafolio.models.responses.ErrorResponse;
 import com.co.indra.coinmarketcap.portafolio.models.responses.PortfolioDistribution;
+import com.co.indra.coinmarketcap.portafolio.models.responses.ListPortfolioResponse;
 import com.co.indra.coinmarketcap.portafolio.repository.AssetRepository;
 import com.co.indra.coinmarketcap.portafolio.repository.PortfolioRepository;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -96,14 +97,17 @@ public class PortfolioControllerTest {
     public void getPortafoliosByUser() throws Exception {
         //----la ejecucion de la prueba misma--------------
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .get(Routes.PORTFOLIO_PATH + Routes.PORTFOLIO_USERS, 1)
+                .get(Routes.PORTFOLIO_PATH + Routes.PORTFOLIO_SUMARY, 1)
                 .contentType(MediaType.APPLICATION_JSON);
 
         MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
         //------------ las verificaciones--------------------
         Assertions.assertEquals(200, response.getStatus());
-        Portfolio[] portfolio = objectMapper.readValue(response.getContentAsString(), Portfolio[].class);
-        Assertions.assertEquals(2, portfolio.length);
+        objectMapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+        ListPortfolioResponse[] portfolio = objectMapper.readValue(response.getContentAsString(), ListPortfolioResponse[].class);
+        Assertions.assertEquals(10.5052, portfolio[0].getTotal());
+        
+        
     }
 
     @Test
