@@ -33,8 +33,25 @@ public class Asset implements Serializable {
     public Asset() {
 
     }
+    
+    
 
-    public int getId() {
+    public Asset( int accouting, String nameAsset, int quantity, Double price, Double dailyVariation,
+			Double avgBuyPrice, Double profit, Double loss) {
+		super();
+		this.accouting = accouting;
+		this.nameAsset = nameAsset;
+		this.quantity = quantity;
+		this.price = price;
+		this.dailyVariation = dailyVariation;
+		this.avgBuyPrice = avgBuyPrice;
+		this.profit = profit;
+		this.loss = loss;
+	}
+
+
+
+	public int getId() {
         return id;
     }
 

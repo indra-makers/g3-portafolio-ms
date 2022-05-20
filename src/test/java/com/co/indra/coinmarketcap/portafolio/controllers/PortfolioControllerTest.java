@@ -92,17 +92,16 @@ public class PortfolioControllerTest {
     }
 	
 	@Test
-    @Sql("/testdata/get_portafolios_user.sql")
+    @Sql("/testdata/V1.1__get_portafolios_user.sql")
     public void getPortafoliosByUser() throws Exception {
         //----la ejecucion de la prueba misma--------------
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .get(Routes.PORTFOLIO_PATH + "/{idUser}", 1)
+                .get(Routes.PORTFOLIO_PATH + Routes.PORTFOLIO_USERS, 1)
                 .contentType(MediaType.APPLICATION_JSON);
 
         MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
         //------------ las verificaciones--------------------
         Assertions.assertEquals(200, response.getStatus());
-
         Portfolio[] portfolio = objectMapper.readValue(response.getContentAsString(), Portfolio[].class);
         Assertions.assertEquals(2, portfolio.length);
     }

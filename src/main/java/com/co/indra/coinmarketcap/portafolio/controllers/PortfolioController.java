@@ -3,7 +3,6 @@ package com.co.indra.coinmarketcap.portafolio.controllers;
 import java.util.List;
 
 import com.co.indra.coinmarketcap.portafolio.models.entities.Asset;
-import com.co.indra.coinmarketcap.portafolio.models.entities.Transaction;
 import com.co.indra.coinmarketcap.portafolio.models.responses.PortfolioDistribution;
 import com.co.indra.coinmarketcap.portafolio.models.responses.ListPortfolioResponse;
 import com.co.indra.coinmarketcap.portafolio.services.AssetService;
@@ -33,16 +32,6 @@ public class PortfolioController {
 		portfolioService.createPortfolio(portfolio);
 	}
 
-	@PostMapping(Routes.PORTFOLIO_ID)
-	public void createAssetToPortfolio(@RequestBody Asset asset, @PathVariable("idPortfolio") int idPortfolio) {
-		assetService.createAsset(asset, idPortfolio);
-	}
-
-	@GetMapping(Routes.PORTFOLIO_SUMARY)
-	public ListPortfolioResponse getPortfolioSumary(@PathVariable int idUsuario) {
-		return portfolioService.getSumary(idUsuario);
-	}
-
 	@PostMapping(Routes.PORTFOLIO_ASSETS)
 	public void createAssetToPortfolio(@RequestBody Asset asset, @PathVariable("idPortfolio") int idPortfolio) {
 		assetService.createAsset(asset, idPortfolio);
@@ -67,4 +56,5 @@ public class PortfolioController {
 	public PortfolioDistribution getDistributionPortfolio(@PathVariable(name = "idPortfolio") int idPortfolio) {
 		return portfolioService.getDistributionPortfolio(idPortfolio);
 	}
+
 }

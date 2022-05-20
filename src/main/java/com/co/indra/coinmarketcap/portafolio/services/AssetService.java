@@ -48,9 +48,7 @@ public class AssetService {
 
 		assetRepository.createAsset(asset, idPortfolio);
 		portfolioRepository.modifyBalancePortfolio(idPortfolio, (asset.getPrice() * asset.getQuantity()));
-
 	}
-
 	public void addTransactionToAsset(Transaction transaction, int idAsset) {
 		if (assetRepository.findById(idAsset).isEmpty()) {
 			throw new NotFoundException(ErrorCodes.ASSET_NOT_EXIST.getMessage());
@@ -61,7 +59,6 @@ public class AssetService {
 		List<Asset> assetList = assetRepository.findById(idAsset);
 
 		Helper.helperAssetValidate(transaction, transactionRepository, assetRepository, idAsset, assetList);
-
 	}
 
 	public int delete(int id) {
