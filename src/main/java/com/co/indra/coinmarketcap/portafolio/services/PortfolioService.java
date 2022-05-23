@@ -48,11 +48,10 @@ public class PortfolioService {
     }
 
     public PortfolioDistribution getDistributionPortfolio(int idPortfolio){
-        List<Portfolio> portfolios = portfolioRepository.findByPortfolioId(idPortfolio);
-        if (portfolios.isEmpty()){
+        if (portfolioRepository.findByPortfolioId(idPortfolio).isEmpty()){
             throw new NotFoundException(ErrorCodes.PORTFOLIO_DOES_NOT_EXIST.getMessage());
         }
-        List<AssetAvgDist> assetAvgDists = assetRepository.findAssetsAvgNameByIdPortfolio(idPortfolio, portfolios.get(0).getBalance());
+        List<AssetAvgDist> assetAvgDists = assetRepository.findAssetsAvgNameByIdPortfolio(idPortfolio);
         return new PortfolioDistribution(assetAvgDists);
     }
 }

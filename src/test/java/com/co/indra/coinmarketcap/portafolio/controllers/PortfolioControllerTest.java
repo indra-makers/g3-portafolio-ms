@@ -120,6 +120,10 @@ public class PortfolioControllerTest {
         objectMapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
         PortfolioDistribution[] assetAvgDists = objectMapper.readValue(response.getContentAsString(), PortfolioDistribution[].class);
         Assertions.assertEquals(4, assetAvgDists[0].getAssets().size());
+        Assertions.assertEquals(40, Math.round(assetAvgDists[0].getAssets().get(0).getAvg()));
+        Assertions.assertEquals(24, Math.round(assetAvgDists[0].getAssets().get(1).getAvg()));
+        Assertions.assertEquals(8, Math.round(assetAvgDists[0].getAssets().get(2).getAvg()));
+        Assertions.assertEquals(28, Math.round(assetAvgDists[0].getAssets().get(3).getAvg()));
         Double sumPercent=0d;
         for(int i=0; i < assetAvgDists[0].getAssets().size(); i++){
             sumPercent = sumPercent + assetAvgDists[0].getAssets().get(i).getAvg();

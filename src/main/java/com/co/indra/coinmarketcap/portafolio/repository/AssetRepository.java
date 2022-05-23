@@ -51,10 +51,11 @@ public class AssetRepository {
     public List<Asset> findByPortfolioIdNameAsset(int idPortfolio, String nameAsset) {
         return template.query("SELECT * FROM tbl_assets WHERE id_portfolio=? and name_asset = ?", new AssetRowMapper(), idPortfolio, nameAsset);
     }
-    public List<AssetAvgDist> findAssetsAvgNameByIdPortfolio(int idPortfolio, Double balancePortfolio) {
-        return template.query("SELECT name_asset, holding FROM tbl_assets WHERE id_portfolio=?",
+    public List<AssetAvgDist> findAssetsAvgNameByIdPortfolio(int idPortfolio) {
+        return template.query("SELECT tbl_assets.name_asset, tbl_assets.holding, holding*100/tbl_portfolio.balance_portfolio as avg_distribution FROM tbl_assets" +
+                        " INNER JOIN tbl_portfolio ON tbl_assets.id_portfolio  = tbl_portfolio.id_portfolio WHERE tbl_assets.id_portfolio=?",
                 (rs, rn) -> new AssetAvgDist(rs.getString("name_asset"),
-                        (rs.getInt("holding")*100)/balancePortfolio), idPortfolio);
+                        (rs.getDouble("avg_distribution"))), idPortfolio);
     }
 
     public List<Asset> findById(int idAsset) {
