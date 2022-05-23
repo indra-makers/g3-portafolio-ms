@@ -90,4 +90,11 @@ public class AssetService {
 
     }
 
+    public List<Asset> getAssetsInPortfolio(int idPortfolio){
+        if (portfolioRepository.findByPortfolioId(idPortfolio).isEmpty()) {
+            throw new NotFoundException(ErrorCodes.PORTFOLIO_DOES_NOT_EXIST.getMessage());
+        }
+        return assetRepository.findByPortfolioId(idPortfolio);
+    }
+
 }
