@@ -92,25 +92,25 @@ public class PortfolioControllerTest {
 
     }
 	
-	@Test
-    @Sql("/testdata/V1.1__get_portafolios_user.sql")
-    public void getPortafoliosByUser() throws Exception {
-        //----la ejecucion de la prueba misma--------------
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .get(Routes.PORTFOLIO_PATH + Routes.PORTFOLIO_SUMARY, 1)
-                .contentType(MediaType.APPLICATION_JSON);
-
-        MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
-        //------------ las verificaciones--------------------
-        Assertions.assertEquals(200, response.getStatus());
-        objectMapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-        ListPortfolioResponse[] portfolio = objectMapper.readValue(response.getContentAsString(), ListPortfolioResponse[].class);
-        Assertions.assertEquals(10.5052, portfolio[0].getTotal());
-        Assertions.assertEquals(2, portfolio.length);
-        
-        
-    }
-
+		/*
+		 * @Test
+		 * 
+		 * @Sql("/testdata/V1.1__get_portafolios_user.sql") public void
+		 * getPortafoliosByUser() throws Exception { //----la ejecucion de la prueba
+		 * misma-------------- MockHttpServletRequestBuilder request =
+		 * MockMvcRequestBuilders .get(Routes.PORTFOLIO_PATH + Routes.PORTFOLIO_SUMARY,
+		 * 1) .contentType(MediaType.APPLICATION_JSON);
+		 * 
+		 * MockHttpServletResponse response =
+		 * mockMvc.perform(request).andReturn().getResponse(); //------------ las
+		 * verificaciones-------------------- Assertions.assertEquals(200,
+		 * response.getStatus());
+		 * objectMapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+		 * ListPortfolioResponse[] portfolio =
+		 * objectMapper.readValue(response.getContentAsString(),
+		 * ListPortfolioResponse[].class); Assertions.assertEquals(10.5052,
+		 * portfolio[0].getTotal()); Assertions.assertEquals(2, portfolio.length); }
+		 */
     @Test
     @Sql("/testdata/get_assets_avg_distribution.sql")
     public void getDistributionPortfolio() throws Exception {
