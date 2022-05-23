@@ -69,4 +69,8 @@ public class PortfolioController {
 
    }
 
+    @GetMapping(Routes.PORTFOLIO_TRANSACTIONS)
+    public List<Transaction> getPortfolioTransactions(@PathVariable(name = "IdPortfolio") int id){
+        return portfolioService.getTransactionByPortfolioId(id);
+    }
 }

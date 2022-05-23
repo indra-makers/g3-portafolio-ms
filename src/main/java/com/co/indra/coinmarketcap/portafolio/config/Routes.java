@@ -15,4 +15,6 @@ public class Routes {
    public static final String EDIT_PORTFOLIO = "/{idPortfolio}";
    public static final String DELETE_PORTFOLIO_BY_NAME = "/{name}";
 
+    public static final String PORTFOLIO_TRANSACTIONS = "/{IdPortfolio}/transactions";
+
 }
