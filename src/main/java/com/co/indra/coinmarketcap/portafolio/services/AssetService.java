@@ -45,9 +45,6 @@ public class AssetService {
 		} else {
 			throw new BusinessException(ErrorCodes.FIRST_TRANSACTION_MUST_BE_BUY);
 		}
-
-		assetRepository.createAsset(asset, idPortfolio);
-		portfolioRepository.modifyBalancePortfolio(idPortfolio, (asset.getPrice() * asset.getQuantity()));
 	}
 	public void addTransactionToAsset(Transaction transaction, int idAsset) {
 		if (assetRepository.findById(idAsset).isEmpty()) {

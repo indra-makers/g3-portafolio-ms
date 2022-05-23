@@ -1,1 +1,0 @@
-INSERT INTO public.tbl_portfolio(id_portfolio, name_portfolio, id_user, balance_portfolio) values(1, 'AAB', 12, 4.2);
