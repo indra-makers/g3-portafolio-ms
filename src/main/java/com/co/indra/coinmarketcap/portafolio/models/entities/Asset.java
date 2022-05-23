@@ -11,6 +11,8 @@ public class Asset implements Serializable {
 
     private int accouting;
 
+    private String type;
+
     private String nameAsset;
 
     private int quantity;
@@ -118,6 +120,14 @@ public class Asset implements Serializable {
 
     public void setLoss(Double loss) {
         this.loss = loss;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
 }

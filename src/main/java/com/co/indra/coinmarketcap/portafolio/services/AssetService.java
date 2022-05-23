@@ -29,6 +29,7 @@ public class AssetService {
     @Autowired
     TransactionRepository transactionRepository;
 
+
     public void createAsset(Asset asset, int idPortfolio) {
         if (portfolioRepository.findByPortfolioId(idPortfolio).isEmpty()) {
             throw new NotFoundException(ErrorCodes.PORTFOLIO_DOES_NOT_EXIST.getMessage());
@@ -36,8 +37,12 @@ public class AssetService {
         if (!assetRepository.findByPortfolioIdNameAsset(idPortfolio, asset.getNameAsset()).isEmpty()) {
             throw new BusinessException(ErrorCodes.PORTFOLIO_WITH_ASSET_ALREADY_EXISTS);
         }
-        assetRepository.createAsset(asset, idPortfolio);
-        portfolioRepository.modifyBalancePortfolio(idPortfolio, (asset.getPrice() * asset.getQuantity()));
+        if (asset.getType().equals("BUY")) {
+            assetRepository.createAsset(asset, idPortfolio);
+            portfolioRepository.modifyBalancePortfolio(idPortfolio, (asset.getPrice() * asset.getQuantity()));
+        }else{
+            throw new BusinessException(ErrorCodes.FIRST_TRANSACTION_MUST_BE_BUY);
+        }
 
     }
 
@@ -66,11 +71,6 @@ public class AssetService {
             } else {
                 transaction.setQuantity(-transaction.getQuantity());
                 transactionRepository.addTransactionToAsset(transaction, idAsset);
-                List<Transaction> transactions = transactionRepository.getTransactionByIdAsset(idAsset);
-                for (int i = 0; i < transactions.size(); i++) {
-                    quantityTotal = quantityTotal + transactions.get(i).getQuantity();
-                    amountTotal = amountTotal + transactions.get(i).getAmount();
-                }
                 assetRepository.updateAsset(transaction, idAsset, amountTotal, quantityTotal, assetList.get(0).getQuantity(), assetList.get(0).getPrice());
             }
         } else {

@@ -43,6 +43,7 @@ public class AssetControllerTest {
                 .content("{\n" +
                         "    \"accouting\": 5,\n" +
                         "    \"nameAsset\": \"TVQ\",\n" +
+                        "    \"type\": \"BUY\",\n" +
                         "    \"quantity\": 1,\n" +
                         "    \"price\": 1087.23,\n" +
                         "    \"dailyVariation\": 50.50,\n" +
@@ -71,6 +72,7 @@ public class AssetControllerTest {
                 .content("{\n" +
                         "    \"accouting\": 5,\n" +
                         "    \"nameAsset\": \"TVQ\",\n" +
+                        "    \"type\": \"BUY\",\n" +
                         "    \"quantity\": 1,\n" +
                         "    \"price\": 1087.23,\n" +
                         "    \"dailyVariation\": 50.50,\n" +
@@ -90,6 +92,33 @@ public class AssetControllerTest {
 
         Assertions.assertEquals("004", error.getCode());
         Assertions.assertEquals("A ASSET WITH THE GIVEN PORTFOLIO ALREADY EXISTS", error.getMessage());
+    }
+
+    @Test
+    @Sql("/testdata/addPortfolio.sql")
+    public void createAssetSell() throws Exception{
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .post(Routes.PORTFOLIO_PATH+Routes.PORTFOLIO_ID, 1)
+                .content("{\n" +
+                        "    \"accouting\": 5,\n" +
+                        "    \"nameAsset\": \"TVQ\",\n" +
+                        "    \"type\": \"SELL\",\n" +
+                        "    \"quantity\": 1,\n" +
+                        "    \"price\": 1087.23,\n" +
+                        "    \"dailyVariation\": 50.50,\n" +
+                        "    \"holding\": 3,\n" +
+                        "    \"avgBuyPrice\": 20.20,\n" +
+                        "    \"profit\": 10.10,\n" +
+                        "    \"loss\": 30.30\n" +
+                        "}").contentType(MediaType.APPLICATION_JSON);
+
+        MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
+        Assertions.assertEquals(412, response.getStatus());
+
+        String textResponse = response.getContentAsString();
+        ErrorResponse error = objectMapper.readValue(textResponse, ErrorResponse.class);
+        Assertions.assertEquals("010", error.getCode());
+        Assertions.assertEquals("THE FIRST TRANSACTION MUST BE BUY", error.getMessage());
     }
 
 }

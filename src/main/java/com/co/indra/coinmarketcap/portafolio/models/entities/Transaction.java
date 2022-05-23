@@ -16,6 +16,7 @@ public class Transaction implements Serializable {
     private String type;
 
     private Double price;
+
     @Past
     private Date dateTime;
 
@@ -102,4 +103,6 @@ public class Transaction implements Serializable {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+    
 }
+
