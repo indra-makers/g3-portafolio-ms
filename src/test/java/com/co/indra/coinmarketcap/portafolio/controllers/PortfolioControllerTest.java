@@ -69,7 +69,7 @@ public class PortfolioControllerTest {
 	@Test
     public void addPortafolioPortafolioAlreadyExist() throws Exception {
         //----la preparacion de los datos de prueba-------
-        portfolioRepository.create(new Portfolio("my_coins", 1 , 45.45d));
+        portfolioRepository.create(new Portfolio("my_coins",  45.45d, 1));
 
         //----la ejecucion de la prueba misma--------------
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders

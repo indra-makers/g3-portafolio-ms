@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import com.co.indra.coinmarketcap.portafolio.models.entities.Portfolio;
+import com.co.indra.coinmarketcap.portafolio.models.responses.PortfolioSumary;
 
 class PortfolioRowMapper implements RowMapper<Portfolio> {
 	@Override
@@ -46,6 +47,12 @@ public class PortfolioRepository {
 	public List<Portfolio> getPorfolio(int idUser) {
 		return template.query("select id_user, name_portfolio, balance_portfolio from tbl_portfolio where id_user=?",
 				new PortfolioRowMapper(), idUser);
+	}
+
+	public List<PortfolioSumary> getSumary(int idUser) {
+		return template.query("select name_portfolio,balance_portfolio from tbl_portfolio where id_user = ?",
+				(rs, rn) -> new PortfolioSumary(rs.getString("name_portfolio"), rs.getDouble("balance_portfolio")), idUser);
+
 	}
 
 	public void modifyBalancePortfolio(int idPortfolio, Double value) {

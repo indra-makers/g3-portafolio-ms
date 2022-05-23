@@ -37,11 +37,6 @@ public class PortfolioController {
 		assetService.createAsset(asset, idPortfolio);
 	}
 
-	@GetMapping(Routes.PORTFOLIO_SUMARY)
-	public ListPortfolioResponse getPortfolioSumary(@PathVariable int idUsuario) {
-		return portfolioService.getSumary(idUsuario);
-	}
-
 	@GetMapping(Routes.PORTFOLIO_USERS)
 	public List<Portfolio> getPortfolio(@PathVariable int idUsuario) {
 		return portfolioService.getPorfolioByUser(idUsuario);
@@ -55,6 +50,10 @@ public class PortfolioController {
 	@GetMapping(Routes.DISTRIBUTION_PATH)
 	public PortfolioDistribution getDistributionPortfolio(@PathVariable(name = "idPortfolio") int idPortfolio) {
 		return portfolioService.getDistributionPortfolio(idPortfolio);
+	}
+
+	public ListPortfolioResponse getPortfolioSumary(@PathVariable int idUser) {
+		return portfolioService.getSumary(idUser);
 	}
 
 }

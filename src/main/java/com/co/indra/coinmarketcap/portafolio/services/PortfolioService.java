@@ -13,11 +13,11 @@ import com.co.indra.coinmarketcap.portafolio.exceptions.BusinessException;
 import com.co.indra.coinmarketcap.portafolio.exceptions.NotFoundException;
 import com.co.indra.coinmarketcap.portafolio.models.entities.Portfolio;
 import com.co.indra.coinmarketcap.portafolio.models.responses.ListPortfolioResponse;
+import com.co.indra.coinmarketcap.portafolio.models.responses.PortfolioSumary;
 import com.co.indra.coinmarketcap.portafolio.repository.PortfolioRepository;
 
 @Service
 public class PortfolioService {
-
 	@Autowired
 	private PortfolioRepository portfolioRepository;
 	@Autowired
@@ -40,7 +40,6 @@ public class PortfolioService {
 		} else {
 			return portfolioRepository.getPorfolio(idUser);
 		}
-
 	}
 
 	public PortfolioDistribution getDistributionPortfolio(int idPortfolio) {
@@ -52,10 +51,10 @@ public class PortfolioService {
 	}
 
 	public ListPortfolioResponse getSumary(int idUser) {
-		List<Portfolio> portfolios = portfolioRepository.getPorfolio(idUser);
+		List<PortfolioSumary> portfolios = portfolioRepository.getSumary(idUser);
 		double sum = 0;
 
-		for (Portfolio portfolio : portfolios) {
+		for (PortfolioSumary portfolio : portfolios) {
 			sum += portfolio.getBalance();
 		}
 
