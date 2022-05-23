@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.co.indra.coinmarketcap.portafolio.models.responses.AssetAvgDist;
+import com.co.indra.coinmarketcap.portafolio.models.responses.PortfolioDistribution;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
