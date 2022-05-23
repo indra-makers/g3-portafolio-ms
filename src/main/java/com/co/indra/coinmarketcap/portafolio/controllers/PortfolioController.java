@@ -52,10 +52,6 @@ public class PortfolioController {
 	public ListPortfolioResponse getPortfolioSumary(@PathVariable int idUser) {
 		return portfolioService.getSumary(idUser);
 	}
-    @PostMapping(Routes.PORTFOLIO_ID)
-    public void createAssetToPortfolio(@RequestBody Asset asset, @PathVariable("idPortfolio") int idPortfolio) {
-        assetService.createAsset(asset, idPortfolio);
-    }
     @PutMapping(Routes.EDIT_PORTFOLIO)
     public void editPortfolio(@PathVariable("idPortfolio") int id, @RequestBody Portfolio portfolio){
         portfolioService.editPortfolio(portfolio, id);
