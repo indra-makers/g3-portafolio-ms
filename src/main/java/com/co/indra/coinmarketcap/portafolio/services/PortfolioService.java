@@ -36,4 +36,16 @@ public class PortfolioService {
         }
 
     }
+    
+    
+    public void removePortafolio(String name) {
+       
+       if(portfolioRepository.findPortafolioByName(name).isEmpty()) {
+          throw new RuntimeException("PortFolio not exist for delete");
+       }
+          portfolioRepository.deletePortafolio(name);
+       
+       
+       }
+    
 }

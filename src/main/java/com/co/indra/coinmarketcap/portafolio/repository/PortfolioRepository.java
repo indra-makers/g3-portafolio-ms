@@ -56,5 +56,17 @@ public class PortfolioRepository {
         template.update("UPDATE tbl_portfolio SET balance_portfolio  = ? WHERE id_portfolio  = ?",
                 portfolios.get(0).getBalance() + value, idPortfolio);
     }
+    
+    //Eliminar portafolio
+    public void deletePortafolio(String name) {
+       template.update("DELETE FROM tbl_portfolio WHERE name_portfolio = ? ", name);
+    }
+    
+    //Buscar portafolio por nombre
+    public List<Portfolio> findPortafolioByName(String name) {
+       return template.query(
+               "SELECT id_user, name_portfolio, balance_portfolio from tbl_portfolio WHERE name_portfolio = ?",
+               new PortfolioRowMapper(), name);
+   }
 
 }
