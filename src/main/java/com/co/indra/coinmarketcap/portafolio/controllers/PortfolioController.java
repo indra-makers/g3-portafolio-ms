@@ -52,6 +52,7 @@ public class PortfolioController {
 		return portfolioService.getDistributionPortfolio(idPortfolio);
 	}
 
+	@GetMapping(Routes.PORTFOLIO_SUMARY)
 	public ListPortfolioResponse getPortfolioSumary(@PathVariable int idUser) {
 		return portfolioService.getSumary(idUser);
 	}
