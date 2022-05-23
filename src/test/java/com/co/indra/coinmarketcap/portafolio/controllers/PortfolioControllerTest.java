@@ -106,6 +106,7 @@ public class PortfolioControllerTest {
         objectMapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
         ListPortfolioResponse[] portfolio = objectMapper.readValue(response.getContentAsString(), ListPortfolioResponse[].class);
         Assertions.assertEquals(10.5052, portfolio[0].getTotal());
+        Assertions.assertEquals(2, portfolio.length);
         
         
     }
