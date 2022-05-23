@@ -142,4 +142,42 @@ public class PortfolioControllerTest {
         Assertions.assertEquals("PORTFOLIO WITH THIS ID DOES NOT EXISTS", error.getMessage());
     }
 
+    @Test
+    @Sql("/testdata/put_portfolio.sql")
+    public void editPortfolio() throws Exception {
+        List<Portfolio> portafolio1 = portfolioRepository.findByPortfolioId(3);
+        Portfolio portafolioToAssert1 = portafolio1.get(0);
+        Assertions.assertEquals("AAB", portafolioToAssert1.getName());
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .put(Routes.PORTFOLIO_PATH + Routes.EDIT_PORTFOLIO, 3)
+                .content("{\n" +
+                        "    \"name\": \"portfolio1\"\n" +
+                        "}").contentType(MediaType.APPLICATION_JSON);
+
+        MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
+        Assertions.assertEquals(200, response.getStatus());
+
+        List<Portfolio> portafolio = portfolioRepository.findByPortfolioId(3);
+        Assertions.assertEquals(1, portafolio.size());
+
+        Portfolio portafolioToAssert = portafolio.get(0);
+
+        Assertions.assertEquals("portfolio1", portafolioToAssert.getName());
+    }
+    @Test
+    public void editBadPortfolio() throws Exception {
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .put(Routes.PORTFOLIO_PATH + Routes.EDIT_PORTFOLIO, 5)
+                .content("{\n" +
+                        "    \"name\": \"portfolio1\"\n" +
+                        "}").contentType(MediaType.APPLICATION_JSON);
+
+        MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
+        Assertions.assertEquals(404, response.getStatus());
+        String textREsponse = response.getContentAsString();
+        ErrorResponse error = objectMapper.readValue(textREsponse, ErrorResponse.class);
+
+        Assertions.assertEquals("NOT FOUND", error.getCode());
+        Assertions.assertEquals("PORTFOLIO WITH THIS ID DOES NOT EXISTS", error.getMessage());
+    }
 }

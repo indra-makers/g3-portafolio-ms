@@ -56,8 +56,8 @@ public class PortfolioController {
     public void createAssetToPortfolio(@RequestBody Asset asset, @PathVariable("idPortfolio") int idPortfolio) {
         assetService.createAsset(asset, idPortfolio);
     }
-    @PutMapping
-    public void editPortfolio(@PathVariable("id") int id, @RequestBody Portfolio portfolio){
+    @PutMapping(Routes.EDIT_PORTFOLIO)
+    public void editPortfolio(@PathVariable("idPortfolio") int id, @RequestBody Portfolio portfolio){
         portfolioService.editPortfolio(portfolio, id);
     }
 }
