@@ -71,6 +71,26 @@ public class AssetControllerTestJ {
                   + "    \"notes\": \"ADSERTEET WEQ crte\",\n" + "    \"quantity\": 3,\n" + "    \"amount\": 15\n"
                   + "}")
             .contentType(MediaType.APPLICATION_JSON);
+        Assertions.assertEquals(5000, transaction.getPrice());
+        Assertions.assertEquals(3, transaction.getQuantity());
+        List<Asset> historicAsset = assetRepository.findHistoricById(666);
+        Assertions.assertEquals(1, historicAsset.size());
+        Assertions.assertEquals(5, historicAsset.get(0).getQuantity());
+    }
+    @Test
+    public void addTransactionToNoAsset() throws Exception {
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .post(Routes.ASSETS_PATH + Routes.ADD_TRANSACTION_TO_ASSET, 666)
+                .content("{\n" +
+                        "    \"id\": 666,\n" +
+                        "    \"type\": \"BUY\",\n" +
+                        "    \"price\": 5000,\n" +
+                        "    \"dateTime\": \"2022-05-18T00:00:00.000-05:00\",\n" +
+                        "    \"fee\": 30.30,\n" +
+                        "    \"notes\": \"ADSERTEET WEQ crte\",\n" +
+                        "    \"quantity\": 3,\n" +
+                        "    \"amount\": 15\n" +
+                        "}").contentType(MediaType.APPLICATION_JSON);
 
       MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
       Assertions.assertEquals(404, response.getStatus());

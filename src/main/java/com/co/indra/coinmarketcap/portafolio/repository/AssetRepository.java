@@ -38,28 +38,25 @@ public class AssetRepository {
    @Autowired
    private JdbcTemplate template;
 
-   public void createAsset(@NotNull Asset asset, int idPortfolio) {
-      template.update(
-            "INSERT INTO tbl_assets(id_portfolio, accouting ,"
-                  + "name_asset,quantity,price,daily_variation,holding, avg_buy_price, profit ,"
-                  + "loss) values(?,?,?,?,?,?,?,?,?,?)",
-            idPortfolio, asset.getAccouting(), asset.getNameAsset(), asset.getQuantity(), asset.getPrice(),
-            asset.getDailyVariation(), (asset.getPrice() * asset.getQuantity()), asset.getAvgBuyPrice(),
-            asset.getProfit(), asset.getLoss());
-   }
-
    public List<Asset> findByPortfolioIdNameAsset(int idPortfolio, String nameAsset) {
       return template.query("SELECT * FROM tbl_assets WHERE id_portfolio=? and name_asset = ?", new AssetRowMapper(),
             idPortfolio, nameAsset);
    }
-
-   public List<AssetAvgDist> findAssetsAvgNameByIdPortfolio(int idPortfolio) {
-      return template.query(
-            "SELECT tbl_assets.name_asset, holding*100/tbl_portfolio.balance_portfolio as avg_distribution FROM tbl_assets"
-                  + " INNER JOIN tbl_portfolio ON tbl_assets.id_portfolio  = tbl_portfolio.id_portfolio WHERE tbl_assets.id_portfolio=?",
-            (rs, rn) -> new AssetAvgDist(rs.getString("name_asset"), (rs.getDouble("avg_distribution"))), idPortfolio);
-   }
-
+    public void createAsset(@NotNull Asset asset, int idPortfolio) {
+        template.update(
+                "INSERT INTO tbl_assets(id_portfolio, accouting ,"
+                        + "name_asset,quantity,price,daily_variation,holding, avg_buy_price, profit ,"
+                        + "loss) values(?,?,?,?,?,?,?,?,?,?)",
+                idPortfolio, asset.getAccouting(), asset.getNameAsset(), asset.getQuantity(), asset.getPrice(),
+                asset.getDailyVariation(), (asset.getPrice() * asset.getQuantity()), asset.getAvgBuyPrice(), asset.getProfit(),
+                asset.getLoss());
+    }
+    public List<AssetAvgDist> findAssetsAvgNameByIdPortfolio(int idPortfolio) {
+        return template.query("SELECT tbl_assets.name_asset, holding*100/tbl_portfolio.balance_portfolio as avg_distribution FROM tbl_assets" +
+                        " INNER JOIN tbl_portfolio ON tbl_assets.id_portfolio  = tbl_portfolio.id_portfolio WHERE tbl_assets.id_portfolio=?",
+                (rs, rn) -> new AssetAvgDist(rs.getString("name_asset"),
+                        (rs.getDouble("avg_distribution"))), idPortfolio);
+    }
    public List<Asset> findById(int idAsset) {
       return template.query("SELECT * FROM tbl_assets WHERE id_assets=?", new AssetRowMapper(), idAsset);
    }
@@ -72,7 +69,6 @@ public class AssetRepository {
       template.update("UPDATE tbl_assets SET avg_buy_price  = ? WHERE id_assets = ?", (amountTotal / quantityTotal),
             idAsset);
    }
-
    public void updateAsset(Transaction transaction, int idAsset, Double amountTotal, int quantityTotal,
          int currentQuantity, Double currentPrice) {
       template.update("UPDATE tbl_assets SET avg_buy_price  = ?, quantity = ?, holding = ? WHERE id_assets = ?",
@@ -83,4 +79,16 @@ public class AssetRepository {
    public List<Asset> findByPortfolioId(int idPortfolio) {
       return template.query("SELECT * FROM tbl_assets WHERE id_portfolio=?", new AssetRowMapper(), idPortfolio);
    }
+   public void createHistoricAsset(@NotNull Asset asset) {
+        template.update(
+                "INSERT INTO tbl_historic_assets(id_assets, id_portfolio, accouting ,"
+                        + "name_asset,quantity,price,daily_variation,holding, avg_buy_price, profit ,"
+                        + "loss) values(?,?,?,?,?,?,?,?,?,?,?)",
+                asset.getId(), asset.getIdPortfolio(), asset.getAccouting(), asset.getNameAsset(), asset.getQuantity(), asset.getPrice(),
+                asset.getDailyVariation(), asset.getHolding(), asset.getAvgBuyPrice(), asset.getProfit(),
+                asset.getLoss());
+    }
+    public List<Asset> findHistoricById(int idAsset) {
+        return template.query("SELECT * FROM tbl_historic_assets WHERE id_assets=?", new AssetRowMapper(), idAsset);
+    }
 }
