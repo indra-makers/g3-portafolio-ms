@@ -7,8 +7,10 @@ import javax.transaction.Transactional;
 import com.co.indra.coinmarketcap.portafolio.config.Routes;
 import com.co.indra.coinmarketcap.portafolio.models.entities.Portfolio;
 import com.co.indra.coinmarketcap.portafolio.models.responses.ErrorResponse;
-import com.co.indra.coinmarketcap.portafolio.repository.AssetRepository;
+import com.co.indra.coinmarketcap.portafolio.models.responses.PortfolioDistribution;
+import com.co.indra.coinmarketcap.portafolio.models.responses.ListPortfolioResponse;
 import com.co.indra.coinmarketcap.portafolio.repository.PortfolioRepository;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -64,7 +66,7 @@ public class PortfolioControllerTest {
 	@Test
     public void addPortafolioPortafolioAlreadyExist() throws Exception {
         //----la preparacion de los datos de prueba-------
-        portfolioRepository.create(new Portfolio("my_coins", 1 , 45.45d));
+        portfolioRepository.create(new Portfolio("my_coins",  45.45d, 1));
 
         //----la ejecucion de la prueba misma--------------
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
@@ -83,24 +85,99 @@ public class PortfolioControllerTest {
         ErrorResponse error = objectMapper.readValue(textREsponse, ErrorResponse.class);
 
         Assertions.assertEquals("001", error.getCode());
-        Assertions.assertEquals("the portfolio name is already in use", error.getMessage());
+        Assertions.assertEquals("THE PORTFOLIO NAME IS ALREADY IN USE", error.getMessage());
 
     }
-	
-	@Test
-    @Sql("/testdata/get_portafolios_user.sql")
-    public void getPortafoliosByUser() throws Exception {
-        //----la ejecucion de la prueba misma--------------
+
+    @Test
+    @Sql("/testdata/get_portafolios_user.sql") public void
+    getPortafoliosByUser() throws Exception {
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders .get(Routes.PORTFOLIO_PATH + Routes.PORTFOLIO_SUMARY, 1)
+                .contentType(MediaType.APPLICATION_JSON);
+        MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
+        Assertions.assertEquals(200, response.getStatus());
+
+        objectMapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+        ListPortfolioResponse[] portfolio = objectMapper.readValue(response.getContentAsString(), ListPortfolioResponse[].class);
+        Assertions.assertEquals(10.5052, portfolio[0].getTotal());
+        Assertions.assertEquals(2, portfolio[0].getPortfolios().size());
+    }
+    @Test
+    @Sql("/testdata/get_assets_avg_distribution.sql")
+    public void getDistributionPortfolio() throws Exception {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .get(Routes.PORTFOLIO_PATH + Routes.PORTFOLIO_USER, 1)
+                .get(Routes.PORTFOLIO_PATH+Routes.DISTRIBUTION_PATH, 999)
                 .contentType(MediaType.APPLICATION_JSON);
 
         MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
-        //------------ las verificaciones--------------------
         Assertions.assertEquals(200, response.getStatus());
 
-        Portfolio[] portfolio = objectMapper.readValue(response.getContentAsString(), Portfolio[].class);
-        Assertions.assertEquals(2, portfolio.length);
+        objectMapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+        PortfolioDistribution[] assetAvgDists = objectMapper.readValue(response.getContentAsString(), PortfolioDistribution[].class);
+        Assertions.assertEquals(4, assetAvgDists[0].getAssets().size());
+        Assertions.assertEquals(40, Math.round(assetAvgDists[0].getAssets().get(0).getAvg()));
+        Assertions.assertEquals(24, Math.round(assetAvgDists[0].getAssets().get(1).getAvg()));
+        Assertions.assertEquals(8, Math.round(assetAvgDists[0].getAssets().get(2).getAvg()));
+        Assertions.assertEquals(28, Math.round(assetAvgDists[0].getAssets().get(3).getAvg()));
+        Double sumPercent=0d;
+        for(int i=0; i < assetAvgDists[0].getAssets().size(); i++){
+            sumPercent = sumPercent + assetAvgDists[0].getAssets().get(i).getAvg();
+        }
+        Assertions.assertEquals(100, Math.round(sumPercent));
+
     }
 
+    @Test
+    @Sql("/testdata/get_assets_avg_distribution.sql")
+    public void getDistributionNoPortfolio() throws Exception {
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get(Routes.PORTFOLIO_PATH+Routes.DISTRIBUTION_PATH, 996)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
+        Assertions.assertEquals(404, response.getStatus());
+        String textResponse = response.getContentAsString();
+        ErrorResponse error = objectMapper.readValue(textResponse, ErrorResponse.class);
+        Assertions.assertEquals("NOT FOUND", error.getCode());
+        Assertions.assertEquals("PORTFOLIO WITH THIS ID DOES NOT EXISTS", error.getMessage());
+    }
+
+    @Test
+    @Sql("/testdata/put_portfolio.sql")
+    public void editPortfolio() throws Exception {
+        List<Portfolio> portafolio1 = portfolioRepository.findByPortfolioId(3);
+        Portfolio portafolioToAssert1 = portafolio1.get(0);
+        Assertions.assertEquals("AAB", portafolioToAssert1.getName());
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .put(Routes.PORTFOLIO_PATH + Routes.EDIT_PORTFOLIO, 3)
+                .content("{\n" +
+                        "    \"name\": \"portfolio1\"\n" +
+                        "}").contentType(MediaType.APPLICATION_JSON);
+
+        MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
+        Assertions.assertEquals(200, response.getStatus());
+
+        List<Portfolio> portafolio = portfolioRepository.findByPortfolioId(3);
+        Assertions.assertEquals(1, portafolio.size());
+
+        Portfolio portafolioToAssert = portafolio.get(0);
+
+        Assertions.assertEquals("portfolio1", portafolioToAssert.getName());
+    }
+    @Test
+    public void editBadPortfolio() throws Exception {
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .put(Routes.PORTFOLIO_PATH + Routes.EDIT_PORTFOLIO, 5)
+                .content("{\n" +
+                        "    \"name\": \"portfolio1\"\n" +
+                        "}").contentType(MediaType.APPLICATION_JSON);
+
+        MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
+        Assertions.assertEquals(404, response.getStatus());
+        String textREsponse = response.getContentAsString();
+        ErrorResponse error = objectMapper.readValue(textREsponse, ErrorResponse.class);
+
+        Assertions.assertEquals("NOT FOUND", error.getCode());
+        Assertions.assertEquals("PORTFOLIO WITH THIS ID DOES NOT EXISTS", error.getMessage());
+    }
 }

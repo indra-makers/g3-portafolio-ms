@@ -2,6 +2,7 @@ package com.co.indra.coinmarketcap.portafolio.repository;
 
 import com.co.indra.coinmarketcap.portafolio.models.entities.Asset;
 import com.co.indra.coinmarketcap.portafolio.models.entities.Transaction;
+import com.co.indra.coinmarketcap.portafolio.models.responses.AssetAvgDist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -50,6 +51,12 @@ public class AssetRepository {
     public List<Asset> findByPortfolioIdNameAsset(int idPortfolio, String nameAsset) {
         return template.query("SELECT * FROM tbl_assets WHERE id_portfolio=? and name_asset = ?", new AssetRowMapper(), idPortfolio, nameAsset);
     }
+    public List<AssetAvgDist> findAssetsAvgNameByIdPortfolio(int idPortfolio) {
+        return template.query("SELECT tbl_assets.name_asset, holding*100/tbl_portfolio.balance_portfolio as avg_distribution FROM tbl_assets" +
+                        " INNER JOIN tbl_portfolio ON tbl_assets.id_portfolio  = tbl_portfolio.id_portfolio WHERE tbl_assets.id_portfolio=?",
+                (rs, rn) -> new AssetAvgDist(rs.getString("name_asset"),
+                        (rs.getDouble("avg_distribution"))), idPortfolio);
+    }
 
     public List<Asset> findById(int idAsset) {
         return template.query("SELECT * FROM tbl_assets WHERE id_assets=?", new AssetRowMapper(), idAsset);
@@ -67,5 +74,9 @@ public class AssetRepository {
     public void updateAsset(Transaction transaction, int idAsset, Double amountTotal, int quantityTotal, int currentQuantity, Double currentPrice) {
         template.update("UPDATE tbl_assets SET avg_buy_price  = ?, quantity = ?, holding = ? WHERE id_assets = ?",
                 (amountTotal / quantityTotal), transaction.getQuantity() + currentQuantity, (transaction.getQuantity() + currentQuantity) * currentPrice, idAsset);
+    }
+
+    public List<Asset> findByPortfolioId(int idPortfolio) {
+        return template.query("SELECT * FROM tbl_assets WHERE id_portfolio=?", new AssetRowMapper(), idPortfolio);
     }
 }
