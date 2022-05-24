@@ -66,13 +66,10 @@ public class PortfolioController {
     }
 
 	
-    @PostMapping(Routes.PORTFOLIO_ID)
-    public void createAssetToPortfolio2(@RequestBody Asset asset, @PathVariable("idPortfolio") int idPortfolio) {
-        assetService.createAsset(asset, idPortfolio);
-    }
-    
-    @DeleteMapping("/{name}")
-    public void removeportafolio(@PathVariable("name") String name ) {
+   
+    //Eliminar portafolio por medio del nombre
+    @DeleteMapping(Routes.DELETE_PORTFOLIO_BY_NAME)
+    public void removePortafolio(@PathVariable("name") String name ) {
        portfolioService.removePortafolio(name);
        
     }

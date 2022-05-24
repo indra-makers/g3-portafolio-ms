@@ -141,6 +141,53 @@ public class PortfolioControllerTest {
         Assertions.assertEquals("NOT FOUND", error.getCode());
         Assertions.assertEquals("PORTFOLIO WITH THIS ID DOES NOT EXISTS", error.getMessage());
     }
+    
+    
+    //Test para eliminar un portafolio sin ningun error
+    @Test
+    @Sql("/testdata/Create_portafolio_On_tbl_porfolio.sql")
+    public void removePortafolioByNameHappyPath() throws Exception{
+       
+       MockHttpServletRequestBuilder requestRemovePortafolioByName = MockMvcRequestBuilders.delete(Routes.PORTFOLIO_PATH+Routes.DELETE_PORTFOLIO_BY_NAME,"PortafolioBTC")
+             .contentType(MediaType.APPLICATION_JSON);
+
+       MockHttpServletResponse responseRemovePortafolioByName = mockMvc.perform(requestRemovePortafolioByName).andReturn()
+             .getResponse();
+       Assertions.assertEquals(200, responseRemovePortafolioByName.getStatus());
+
+       List<Portfolio> PortfolioList = portfolioRepository.findPortafolioByName("PortafolioBTC");
+       Assertions.assertEquals(0, PortfolioList.size()); 
+       
+    }
+    
+    //Test para eliminar un portafolio donde arroja un error cuando no se 
+    //encuentra el portafolio por medio de su nombre
+    @Test
+    @Sql("/testdata/Create_portafolio_On_tbl_porfolio.sql")
+    public void removePortafolioByNameNotFoundPortfolio() throws Exception{
+       
+       MockHttpServletRequestBuilder requestRemovePortafolioByName = MockMvcRequestBuilders.delete(Routes.PORTFOLIO_PATH+Routes.DELETE_PORTFOLIO_BY_NAME,"PortfolioBC")
+             .contentType(MediaType.APPLICATION_JSON);
+
+       MockHttpServletResponse responseRemovePortafolioByName = mockMvc.perform(requestRemovePortafolioByName).andReturn()
+             .getResponse();
+       Assertions.assertEquals(404, responseRemovePortafolioByName.getStatus());
+
+       List<Portfolio> PortfolioList = portfolioRepository.findPortafolioByName("PortafolioBTC");
+       Assertions.assertEquals(1, PortfolioList.size()); 
+       
+       String textResponse = responseRemovePortafolioByName.getContentAsString();
+       
+       ErrorResponse error = objectMapper.readValue(textResponse, ErrorResponse.class);
+       
+       Assertions.assertEquals("NOT FOUND", error.getCode());
+       Assertions.assertEquals("PORTFOLIO WITH THIS NAME DOES NOT EXISTS",error.getMessage());
+       
+    }
+    
+    
+    
+    
 
     @Test
     @Sql("/testdata/put_portfolio.sql")

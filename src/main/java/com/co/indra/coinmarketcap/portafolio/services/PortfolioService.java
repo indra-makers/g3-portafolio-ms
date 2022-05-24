@@ -64,7 +64,7 @@ public class PortfolioService {
     public void removePortafolio(String name) {
        
        if(portfolioRepository.findPortafolioByName(name).isEmpty()) {
-          throw new RuntimeException("PortFolio not exist for delete");
+          throw new NotFoundException(ErrorCodes.PORTFOLIO_NOT_EXIST_WHIT_THIS_NAME.getMessage());
        }
           portfolioRepository.deletePortafolio(name);
        

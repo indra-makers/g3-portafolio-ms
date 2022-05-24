@@ -1,0 +1,1 @@
+INSERT INTO public.tbl_portfolio(id_portfolio,name_portfolio, id_user, balance_portfolio) values(88,'PortafolioBTC',1452,5896);
