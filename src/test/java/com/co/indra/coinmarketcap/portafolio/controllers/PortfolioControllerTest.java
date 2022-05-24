@@ -8,6 +8,8 @@ import com.co.indra.coinmarketcap.portafolio.config.Routes;
 import com.co.indra.coinmarketcap.portafolio.models.entities.Portfolio;
 import com.co.indra.coinmarketcap.portafolio.models.entities.Transaction;
 import com.co.indra.coinmarketcap.portafolio.models.responses.ErrorResponse;
+import com.co.indra.coinmarketcap.portafolio.models.responses.ListPortfolioResponse;
+import com.co.indra.coinmarketcap.portafolio.models.responses.PortfolioDistribution;
 import com.co.indra.coinmarketcap.portafolio.repository.AssetRepository;
 import com.co.indra.coinmarketcap.portafolio.repository.PortfolioRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -66,7 +68,7 @@ public class PortfolioControllerTest {
 	@Test
     public void addPortafolioPortafolioAlreadyExist() throws Exception {
         //----la preparacion de los datos de prueba-------
-        portfolioRepository.create(new Portfolio("my_coins", 1 , 45.45d));
+        portfolioRepository.create(new Portfolio("my_coins", 45.45D , 1));
 
         //----la ejecucion de la prueba misma--------------
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
@@ -85,7 +87,7 @@ public class PortfolioControllerTest {
         ErrorResponse error = objectMapper.readValue(textREsponse, ErrorResponse.class);
 
         Assertions.assertEquals("001", error.getCode());
-        Assertions.assertEquals("the portfolio name is already in use", error.getMessage());
+        Assertions.assertEquals("THE PORTFOLIO NAME IS ALREADY IN USE", error.getMessage());
 
     }
 	

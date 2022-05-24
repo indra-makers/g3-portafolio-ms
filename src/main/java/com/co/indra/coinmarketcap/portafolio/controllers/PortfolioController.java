@@ -2,6 +2,7 @@ package com.co.indra.coinmarketcap.portafolio.controllers;
 
 import java.util.List;
 import com.co.indra.coinmarketcap.portafolio.models.entities.Asset;
+import com.co.indra.coinmarketcap.portafolio.models.entities.Transaction;
 import com.co.indra.coinmarketcap.portafolio.models.responses.PortfolioDistribution;
 import com.co.indra.coinmarketcap.portafolio.models.responses.ListPortfolioResponse;
 import com.co.indra.coinmarketcap.portafolio.services.AssetService;
