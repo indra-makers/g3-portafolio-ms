@@ -67,7 +67,6 @@ public class PortfolioRepository {
    public void editPortfolio(Portfolio portfolio, int idProtfolio) {
       template.update("UPDATE tbl_portfolio SET name_portfolio = ? WHERE id_portfolio = ?", portfolio.getName(),
             idProtfolio);
-
    }
 
    // Eliminar portafolio

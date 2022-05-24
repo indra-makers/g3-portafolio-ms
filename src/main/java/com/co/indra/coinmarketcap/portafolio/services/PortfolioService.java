@@ -86,4 +86,12 @@ public class PortfolioService {
       return transactionRepository.getTransactionInPortfolio(idPortfolio);
    }
 
+   public void editTransaction(Transaction transaction, int id) {
+      if (transactionRepository.getTransactionById(id).isEmpty()) {
+         throw new NotFoundException(ErrorCodes.TRANSACTION_NOT_EXIST_WHIT_THIS_ID.getCode());
+      }
+      transactionRepository.editTransaction(transaction,id);
+   }
+
+
 }

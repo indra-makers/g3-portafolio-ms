@@ -74,4 +74,9 @@ public class PortfolioController {
     public List<Transaction> getPortfolioTransactions(@PathVariable(name = "IdPortfolio") int id){
         return portfolioService.getTransactionByPortfolioId(id);
     }
+
+   @PutMapping(Routes.TRANSACTIONS_PATH+Routes.EDIT_TRANSACTION)
+   public void editTransaction(@PathVariable("IdTransaction") int id, @RequestBody Transaction transaction) {
+      portfolioService.editTransaction(transaction, id);
+   }
 }

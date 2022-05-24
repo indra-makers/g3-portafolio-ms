@@ -1,5 +1,6 @@
 package com.co.indra.coinmarketcap.portafolio.repository;
 
+import com.co.indra.coinmarketcap.portafolio.models.entities.Portfolio;
 import com.co.indra.coinmarketcap.portafolio.models.entities.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -49,5 +50,15 @@ public class TransactionRepository {
 		return template.query("select * from tbl_assets_transaction inner join tbl_assets on tbl_assets.id_assets = tbl_assets_transaction.id_asset where tbl_assets.id_portfolio=?",
 				new TransactionRowMapper(), idPortfolio);
 	}
+
+    public List<Transaction> getTransactionById( int idTransaction){
+         return template.query("select * from tbl_assets_transaction where id_transaction=?",
+                 new TransactionRowMapper(), idTransaction);
+    }
+
+   public void editTransaction(Transaction transaction, int idTransaction) {
+      template.update("UPDATE tbl_assets_transaction SET quantity = ?, price_transaction = ?, date_time = ?, fee = ?, notes = ?, amount = ? WHERE id_transaction=?",
+              transaction.getQuantity(),transaction.getPrice(), transaction.getDateTime(), transaction.getFee(),transaction.getNotes(), transaction.getAmount(), idTransaction);
+   }
 
 }
