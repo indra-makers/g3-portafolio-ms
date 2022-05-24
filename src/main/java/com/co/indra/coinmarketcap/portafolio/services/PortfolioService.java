@@ -16,46 +16,61 @@ import com.co.indra.coinmarketcap.portafolio.repository.PortfolioRepository;
 
 @Service
 public class PortfolioService {
-	@Autowired
-	private PortfolioRepository portfolioRepository;
-	@Autowired
-	private AssetRepository assetRepository;
-	public void createPortfolio(Portfolio portfolio) {
-		List<Portfolio> portfolioByname = portfolioRepository.findByNameAndUsername(portfolio.getIdUser(),
-				portfolio.getName());
-		if (!portfolioByname.isEmpty()) {
-			throw new BusinessException(ErrorCodes.NAME_ALREADY_IN_USE);
-		} else {
-			portfolioRepository.create(portfolio);
-		}
-	}
-	public List<Portfolio> getPorfolioByUser(int idUser) {
+   @Autowired
+   private PortfolioRepository portfolioRepository;
+   @Autowired
+   private AssetRepository assetRepository;
 
-		if (portfolioRepository.getPorfolio(idUser).isEmpty()) {
-			throw new NotFoundException(ErrorCodes.USER_NOT_EXIST.getMessage());
-		} else {
-			return portfolioRepository.getPorfolio(idUser);
-		}
-	}
-	public PortfolioDistribution getDistributionPortfolio(int idPortfolio) {
-		if (portfolioRepository.findByPortfolioId(idPortfolio).isEmpty()) {
-			throw new NotFoundException(ErrorCodes.PORTFOLIO_DOES_NOT_EXIST.getMessage());
-		}
-		List<AssetAvgDist> assetAvgDists = assetRepository.findAssetsAvgNameByIdPortfolio(idPortfolio);
-		return new PortfolioDistribution(assetAvgDists);
-	}
-	public ListPortfolioResponse getSumary(int idUser) {
-		List<PortfolioSumary> portfolios = portfolioRepository.getSumary(idUser);
-		double sum = 0;
-		for (PortfolioSumary portfolio : portfolios) {
-			sum += portfolio.getBalance();
-		}
-		return new ListPortfolioResponse(portfolios, sum);
-	}
-    public void editPortfolio(Portfolio portfolio, int id) {
-        if (portfolioRepository.findByPortfolioId(id).isEmpty()) {
-            throw new NotFoundException(ErrorCodes.PORTFOLIO_DOES_NOT_EXIST.getMessage());
-        }
-        portfolioRepository.editPortfolio(portfolio, id);
-    }
+   public void createPortfolio(Portfolio portfolio) {
+      List<Portfolio> portfolioByname = portfolioRepository.findByNameAndUsername(portfolio.getIdUser(),
+            portfolio.getName());
+      if (!portfolioByname.isEmpty()) {
+         throw new BusinessException(ErrorCodes.NAME_ALREADY_IN_USE);
+      } else {
+         portfolioRepository.create(portfolio);
+      }
+   }
+
+   public List<Portfolio> getPorfolioByUser(int idUser) {
+
+      if (portfolioRepository.getPorfolio(idUser).isEmpty()) {
+         throw new NotFoundException(ErrorCodes.USER_NOT_EXIST.getMessage());
+      } else {
+         return portfolioRepository.getPorfolio(idUser);
+      }
+   }
+
+   public PortfolioDistribution getDistributionPortfolio(int idPortfolio) {
+      if (portfolioRepository.findByPortfolioId(idPortfolio).isEmpty()) {
+         throw new NotFoundException(ErrorCodes.PORTFOLIO_DOES_NOT_EXIST.getMessage());
+      }
+      List<AssetAvgDist> assetAvgDists = assetRepository.findAssetsAvgNameByIdPortfolio(idPortfolio);
+      return new PortfolioDistribution(assetAvgDists);
+   }
+
+   public ListPortfolioResponse getSumary(int idUser) {
+      List<PortfolioSumary> portfolios = portfolioRepository.getSumary(idUser);
+      double sum = 0;
+      for (PortfolioSumary portfolio : portfolios) {
+         sum += portfolio.getBalance();
+      }
+      return new ListPortfolioResponse(portfolios, sum);
+   }
+
+   public void editPortfolio(Portfolio portfolio, int id) {
+      if (portfolioRepository.findByPortfolioId(id).isEmpty()) {
+         throw new NotFoundException(ErrorCodes.PORTFOLIO_DOES_NOT_EXIST.getMessage());
+      }
+      portfolioRepository.editPortfolio(portfolio, id);
+   }
+
+   public void removePortafolio(String name) {
+
+      if (portfolioRepository.findPortafolioByName(name).isEmpty()) {
+         throw new NotFoundException(ErrorCodes.PORTFOLIO_NOT_EXIST_WHIT_THIS_NAME.getMessage());
+      }
+      portfolioRepository.deletePortafolio(name);
+
+   }
+
 }

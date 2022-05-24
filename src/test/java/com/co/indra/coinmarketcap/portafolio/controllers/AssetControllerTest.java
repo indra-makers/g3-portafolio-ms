@@ -26,125 +26,102 @@ import java.util.List;
 @Transactional
 public class AssetControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+   @Autowired
+   private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+   @Autowired
+   private ObjectMapper objectMapper;
 
-    @Autowired
-    private AssetRepository assetRepository;
+   @Autowired
+   private AssetRepository assetRepository;
 
-    @Test
-    @Sql("/testdata/addPortfolio.sql")
-    public void createAssetHappyPath() throws Exception{
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .post(Routes.PORTFOLIO_PATH+Routes.PORTFOLIO_ID, 666)
-                .content("{\n" +
-                        "    \"accouting\": 5,\n" +
-                        "    \"nameAsset\": \"ZZZ\",\n" +
-                        "    \"type\": \"BUY\",\n" +
-                        "    \"quantity\": 1,\n" +
-                        "    \"price\": 1087.23,\n" +
-                        "    \"dailyVariation\": 50.50,\n" +
-                        "    \"holding\": 3,\n" +
-                        "    \"avgBuyPrice\": 20.20,\n" +
-                        "    \"profit\": 10.10,\n" +
-                        "    \"loss\": 30.30\n" +
-                        "}").contentType(MediaType.APPLICATION_JSON);
+   @Test
+   @Sql("/testdata/addPortfolio.sql")
+   public void createAssetHappyPath() throws Exception {
+      MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+            .post(Routes.PORTFOLIO_PATH + Routes.PORTFOLIO_ID, 666)
+            .content("{\n" + "    \"accouting\": 5,\n" + "    \"nameAsset\": \"ZZZ\",\n" + "    \"type\": \"BUY\",\n"
+                  + "    \"quantity\": 1,\n" + "    \"price\": 1087.23,\n" + "    \"dailyVariation\": 50.50,\n"
+                  + "    \"holding\": 3,\n" + "    \"avgBuyPrice\": 20.20,\n" + "    \"profit\": 10.10,\n"
+                  + "    \"loss\": 30.30\n" + "}")
+            .contentType(MediaType.APPLICATION_JSON);
 
-        MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
-        Assertions.assertEquals(200, response.getStatus());
+      MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
+      Assertions.assertEquals(200, response.getStatus());
 
-        List<Asset> assets = assetRepository.findByPortfolioIdNameAsset(666,"ZZZ");
-        Asset AssetToAssert = assets.get(0);
+      List<Asset> assets = assetRepository.findByPortfolioIdNameAsset(666, "ZZZ");
+      Asset AssetToAssert = assets.get(0);
 
-        Assertions.assertEquals("ZZZ", AssetToAssert.getNameAsset());
-        Assertions.assertEquals(1, assets.size());
-    }
+      Assertions.assertEquals("ZZZ", AssetToAssert.getNameAsset());
+      Assertions.assertEquals(1, assets.size());
+   }
 
-    @Test
-    @Sql("/testdata/insertAsset.sql")
-    public void createAssetThatAlreadyExists() throws Exception{
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .post(Routes.PORTFOLIO_PATH+Routes.PORTFOLIO_ID, 1)
-                .content("{\n" +
-                        "    \"accouting\": 5,\n" +
-                        "    \"nameAsset\": \"TVQ\",\n" +
-                        "    \"type\": \"BUY\",\n" +
-                        "    \"quantity\": 1,\n" +
-                        "    \"price\": 1087.23,\n" +
-                        "    \"dailyVariation\": 50.50,\n" +
-                        "    \"holding\": 3,\n" +
-                        "    \"avgBuyPrice\": 20.20,\n" +
-                        "    \"profit\": 10.10,\n" +
-                        "    \"loss\": 30.30\n" +
-                        "}").contentType(MediaType.APPLICATION_JSON);
+   @Test
+   @Sql("/testdata/insertAsset.sql")
+   public void createAssetThatAlreadyExists() throws Exception {
+      MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+            .post(Routes.PORTFOLIO_PATH + Routes.PORTFOLIO_ID, 1)
+            .content("{\n" + "    \"accouting\": 5,\n" + "    \"nameAsset\": \"TVQ\",\n" + "    \"type\": \"BUY\",\n"
+                  + "    \"quantity\": 1,\n" + "    \"price\": 1087.23,\n" + "    \"dailyVariation\": 50.50,\n"
+                  + "    \"holding\": 3,\n" + "    \"avgBuyPrice\": 20.20,\n" + "    \"profit\": 10.10,\n"
+                  + "    \"loss\": 30.30\n" + "}")
+            .contentType(MediaType.APPLICATION_JSON);
 
-        MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
+      MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 
-        Assertions.assertEquals(412, response.getStatus());
+      Assertions.assertEquals(412, response.getStatus());
 
-        String textResponse = response.getContentAsString();
+      String textResponse = response.getContentAsString();
 
-        ErrorResponse error = objectMapper.readValue(textResponse, ErrorResponse.class);
+      ErrorResponse error = objectMapper.readValue(textResponse, ErrorResponse.class);
 
-        Assertions.assertEquals("004", error.getCode());
-        Assertions.assertEquals("A ASSET WITH THE GIVEN PORTFOLIO ALREADY EXISTS", error.getMessage());
-    }
+      Assertions.assertEquals("004", error.getCode());
+      Assertions.assertEquals("A ASSET WITH THE GIVEN PORTFOLIO ALREADY EXISTS", error.getMessage());
+   }
 
-    @Test
-    @Sql("/testdata/addPortfolio.sql")
-    public void createAssetSell() throws Exception{
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .post(Routes.PORTFOLIO_PATH+Routes.PORTFOLIO_ID, 666)
-                .content("{\n" +
-                        "    \"accouting\": 5,\n" +
-                        "    \"nameAsset\": \"TVQ\",\n" +
-                        "    \"type\": \"SELL\",\n" +
-                        "    \"quantity\": 1,\n" +
-                        "    \"price\": 1087.23,\n" +
-                        "    \"dailyVariation\": 50.50,\n" +
-                        "    \"holding\": 3,\n" +
-                        "    \"avgBuyPrice\": 20.20,\n" +
-                        "    \"profit\": 10.10,\n" +
-                        "    \"loss\": 30.30\n" +
-                        "}").contentType(MediaType.APPLICATION_JSON);
+   @Test
+   @Sql("/testdata/addPortfolio.sql")
+   public void createAssetSell() throws Exception {
+      MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+            .post(Routes.PORTFOLIO_PATH + Routes.PORTFOLIO_ID, 666)
+            .content("{\n" + "    \"accouting\": 5,\n" + "    \"nameAsset\": \"TVQ\",\n" + "    \"type\": \"SELL\",\n"
+                  + "    \"quantity\": 1,\n" + "    \"price\": 1087.23,\n" + "    \"dailyVariation\": 50.50,\n"
+                  + "    \"holding\": 3,\n" + "    \"avgBuyPrice\": 20.20,\n" + "    \"profit\": 10.10,\n"
+                  + "    \"loss\": 30.30\n" + "}")
+            .contentType(MediaType.APPLICATION_JSON);
 
-        MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
-        Assertions.assertEquals(412, response.getStatus());
+      MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
+      Assertions.assertEquals(412, response.getStatus());
 
-        String textResponse = response.getContentAsString();
-        ErrorResponse error = objectMapper.readValue(textResponse, ErrorResponse.class);
-        Assertions.assertEquals("010", error.getCode());
-        Assertions.assertEquals("THE FIRST TRANSACTION MUST BE BUY", error.getMessage());
-    }
+      String textResponse = response.getContentAsString();
+      ErrorResponse error = objectMapper.readValue(textResponse, ErrorResponse.class);
+      Assertions.assertEquals("010", error.getCode());
+      Assertions.assertEquals("THE FIRST TRANSACTION MUST BE BUY", error.getMessage());
+   }
 
-    @Test
-    @Sql("/testdata/getAssetsInPortfolio.sql")
-    public void getAssetsInPortfolioHappyPath() throws Exception{
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .get(Routes.PORTFOLIO_PATH+Routes.PORTFOLIO_ID, 1)
-                .contentType(MediaType.APPLICATION_JSON);
+   @Test
+   @Sql("/testdata/getAssetsInPortfolio.sql")
+   public void getAssetsInPortfolioHappyPath() throws Exception {
+      MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(Routes.PORTFOLIO_PATH + Routes.PORTFOLIO_ID, 1)
+            .contentType(MediaType.APPLICATION_JSON);
 
-        MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
-        Assertions.assertEquals(200, response.getStatus());
+      MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
+      Assertions.assertEquals(200, response.getStatus());
 
-        Asset[] assets = objectMapper.readValue(response.getContentAsString(), Asset[].class);
-        Assertions.assertEquals(3, assets.length);
-    }
+      Asset[] assets = objectMapper.readValue(response.getContentAsString(), Asset[].class);
+      Assertions.assertEquals(3, assets.length);
+   }
 
-    @Test
-    public void getAssetInPortfolioThatDoesNotExist() throws Exception{
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .get(Routes.PORTFOLIO_PATH+Routes.PORTFOLIO_ID, 1)
-                .contentType(MediaType.APPLICATION_JSON);
+   @Test
+   public void getAssetInPortfolioThatDoesNotExist() throws Exception {
+      MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(Routes.PORTFOLIO_PATH + Routes.PORTFOLIO_ID, 1)
+            .contentType(MediaType.APPLICATION_JSON);
 
-        MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
-        Assertions.assertEquals(404, response.getStatus());
+      MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
+      Assertions.assertEquals(404, response.getStatus());
 
-        ErrorResponse error = objectMapper.readValue(response.getContentAsString(), ErrorResponse.class);
-        Assertions.assertEquals("PORTFOLIO WITH THIS ID DOES NOT EXISTS", error.getMessage());
-    }
+      ErrorResponse error = objectMapper.readValue(response.getContentAsString(), ErrorResponse.class);
+      Assertions.assertEquals("PORTFOLIO WITH THIS ID DOES NOT EXISTS", error.getMessage());
+   }
 
 }
