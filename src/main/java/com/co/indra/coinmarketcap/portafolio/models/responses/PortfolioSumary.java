@@ -1,30 +1,30 @@
 package com.co.indra.coinmarketcap.portafolio.models.responses;
 
 public class PortfolioSumary {
-	
-	private String name;
-	private Double balance;
 
-	public PortfolioSumary(String name, Double balance) {
-		super();
-		this.name = name;
-		this.balance = balance;
-	}
+   private String name;
+   private Double balance;
 
-	public String getName() {
-		return name;
-	}
+   public PortfolioSumary(String name, Double balance) {
+      super();
+      this.name = name;
+      this.balance = balance;
+   }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+   public String getName() {
+      return name;
+   }
 
-	public Double getBalance() {
-		return balance;
-	}
+   public void setName(String name) {
+      this.name = name;
+   }
 
-	public void setBalance(Double balance) {
-		this.balance = balance;
-	}
+   public Double getBalance() {
+      return balance;
+   }
+
+   public void setBalance(Double balance) {
+      this.balance = balance;
+   }
 
 }
