@@ -52,10 +52,23 @@ public class PortfolioService {
 		}
 		return new ListPortfolioResponse(portfolios, sum);
 	}
+
     public void editPortfolio(Portfolio portfolio, int id) {
         if (portfolioRepository.findByPortfolioId(id).isEmpty()) {
             throw new NotFoundException(ErrorCodes.PORTFOLIO_DOES_NOT_EXIST.getMessage());
         }
         portfolioRepository.editPortfolio(portfolio, id);
     }
+
+    
+    public void removePortafolio(String name) {
+       
+       if(portfolioRepository.findPortafolioByName(name).isEmpty()) {
+          throw new RuntimeException("PortFolio not exist for delete");
+       }
+          portfolioRepository.deletePortafolio(name);
+       
+    }
+       
+
 }

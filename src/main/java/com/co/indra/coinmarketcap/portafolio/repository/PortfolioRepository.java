@@ -52,6 +52,7 @@ public class PortfolioRepository {
 	public List<PortfolioSumary> getSumary(int idUser) {
 		return template.query("select name_portfolio,balance_portfolio from tbl_portfolio where id_user = ?",
 				(rs, rn) -> new PortfolioSumary(rs.getString("name_portfolio"), rs.getDouble("balance_portfolio")), idUser);
+
 	}
 
 	public void modifyBalancePortfolio(int idPortfolio, Double value) {
@@ -63,11 +64,26 @@ public class PortfolioRepository {
 				portfolios.get(0).getBalance() + value, idPortfolio);
 	}
 
+
     public void editPortfolio (Portfolio portfolio, int idProtfolio){
         template.update("UPDATE tbl_portfolio SET name_portfolio = ? WHERE id_portfolio = ?",
                 portfolio.getName(), idProtfolio);
 
     }
+
+ 
+    //Eliminar portafolio
+    public void deletePortafolio(String name) {
+       template.update("DELETE FROM tbl_portfolio WHERE name_portfolio = ? ", name);
+    }
+    
+    //Buscar portafolio por nombre
+    public List<Portfolio> findPortafolioByName(String name) {
+       return template.query(
+               "SELECT id_user, name_portfolio, balance_portfolio from tbl_portfolio WHERE name_portfolio = ?",
+               new PortfolioRowMapper(), name);
+   }
+
 
 
 }
