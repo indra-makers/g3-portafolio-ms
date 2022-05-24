@@ -1,8 +1,6 @@
 package com.co.indra.coinmarketcap.portafolio.config;
 
 public class Routes {
-
-
 	public static final String PORTFOLIO_PATH = "/portfolios";
 	public static final String PORTFOLIO_SUMARY = "/{idUser}/sumary";
 	public static final String PORTFOLIO_USERS = "/{idUser}/portfolio";
@@ -13,6 +11,8 @@ public class Routes {
 	public static final String DELETE_ASSETS = "/{idAsset}";
 	public static final String DISTRIBUTION_PATH = "/{idPortfolio}/distributions";
 	public static final String TRANSACTIONS_PATH = "/transactions";
+    public static final String PORTFOLIO_USER = "/users/{id}/portfolios";
+    public static final String EDIT_PORTFOLIO = "/{idPortfolio}";
 
 
 }
