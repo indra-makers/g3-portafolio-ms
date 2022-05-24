@@ -1,9 +1,12 @@
 package com.co.indra.coinmarketcap.portafolio.services;
 
 import java.util.List;
+
+import com.co.indra.coinmarketcap.portafolio.models.entities.Transaction;
 import com.co.indra.coinmarketcap.portafolio.models.responses.AssetAvgDist;
 import com.co.indra.coinmarketcap.portafolio.models.responses.PortfolioDistribution;
 import com.co.indra.coinmarketcap.portafolio.repository.AssetRepository;
+import com.co.indra.coinmarketcap.portafolio.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.co.indra.coinmarketcap.portafolio.config.ErrorCodes;
@@ -20,6 +23,9 @@ public class PortfolioService {
    private PortfolioRepository portfolioRepository;
    @Autowired
    private AssetRepository assetRepository;
+
+   @Autowired
+   private TransactionRepository transactionRepository;
 
    public void createPortfolio(Portfolio portfolio) {
       List<Portfolio> portfolioByname = portfolioRepository.findByNameAndUsername(portfolio.getIdUser(),
@@ -71,6 +77,13 @@ public class PortfolioService {
       }
       portfolioRepository.deletePortafolio(name);
 
+   }
+
+   public List<Transaction> getTransactionByPortfolioId(int idPortfolio){
+      if(portfolioRepository.findByPortfolioId(idPortfolio).isEmpty()){
+         throw new NotFoundException(ErrorCodes.PORTFOLIO_DOES_NOT_EXIST.getMessage());
+      }
+      return transactionRepository.getTransactionInPortfolio(idPortfolio);
    }
 
 }

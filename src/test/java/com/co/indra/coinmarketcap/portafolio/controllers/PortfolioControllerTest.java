@@ -6,13 +6,15 @@ import javax.transaction.Transactional;
 
 import com.co.indra.coinmarketcap.portafolio.config.Routes;
 import com.co.indra.coinmarketcap.portafolio.models.entities.Portfolio;
+import com.co.indra.coinmarketcap.portafolio.models.entities.Transaction;
 import com.co.indra.coinmarketcap.portafolio.models.responses.ErrorResponse;
-import com.co.indra.coinmarketcap.portafolio.models.responses.PortfolioDistribution;
 import com.co.indra.coinmarketcap.portafolio.models.responses.ListPortfolioResponse;
+import com.co.indra.coinmarketcap.portafolio.models.responses.PortfolioDistribution;
+import com.co.indra.coinmarketcap.portafolio.repository.AssetRepository;
 import com.co.indra.coinmarketcap.portafolio.repository.PortfolioRepository;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -29,57 +31,67 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 @Transactional
 public class PortfolioControllerTest {
 
-   @Autowired
-   private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-   @Autowired
-   private ObjectMapper objectMapper;
+	@Autowired
+	private ObjectMapper objectMapper;
+	
+	@Autowired
+	private PortfolioRepository portfolioRepository;
+	
 
-   @Autowired
-   private PortfolioRepository portfolioRepository;
+	
+	@Test
+    public void addPortafolioHappyPath() throws Exception {
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .post(Routes.PORTFOLIO_PATH)
+                .content("{\n" +
+                        "    \"name\": \"my_coins2\",\n" +
+                        "    \"idUser\": \"1\",\n" +
+                        "    \"balance\": \"0\"\n" +
+                        "}").contentType(MediaType.APPLICATION_JSON);
 
-   @Test
-   public void addPortafolioHappyPath() throws Exception {
-      MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(Routes.PORTFOLIO_PATH).content(
-            "{\n" + "    \"name\": \"my_coins2\",\n" + "    \"idUser\": \"1\",\n" + "    \"balance\": \"0\"\n" + "}")
-            .contentType(MediaType.APPLICATION_JSON);
+        MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
+        Assertions.assertEquals(200, response.getStatus());
 
-      MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
-      Assertions.assertEquals(200, response.getStatus());
+        List<Portfolio> portafolio = portfolioRepository.findByNameAndUsername(1,"my_coins2" );
+        Assertions.assertEquals(1, portafolio.size());
 
-      List<Portfolio> portafolio = portfolioRepository.findByNameAndUsername(1, "my_coins2");
-      Assertions.assertEquals(1, portafolio.size());
+        Portfolio portafolioToAssert = portafolio.get(0);
 
-      Portfolio portafolioToAssert = portafolio.get(0);
+        Assertions.assertEquals("my_coins2", portafolioToAssert.getName());
+        Assertions.assertEquals(1, portafolioToAssert.getIdUser());
+        Assertions.assertEquals(0, portafolioToAssert.getBalance());
+    }
+	
+	@Test
+    public void addPortafolioPortafolioAlreadyExist() throws Exception {
+        //----la preparacion de los datos de prueba-------
+        portfolioRepository.create(new Portfolio("my_coins", 45.45D , 1));
 
-      Assertions.assertEquals("my_coins2", portafolioToAssert.getName());
-      Assertions.assertEquals(1, portafolioToAssert.getIdUser());
-      Assertions.assertEquals(0, portafolioToAssert.getBalance());
-   }
+        //----la ejecucion de la prueba misma--------------
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .post(Routes.PORTFOLIO_PATH)
+                .content("{\n" +
+                        "    \"name\": \"my_coins\",\n" +
+                        "    \"idUser\": \"1\",\n" +
+                        "    \"balance\": \"0.0\"\n" +
+                        "}").contentType(MediaType.APPLICATION_JSON);
 
-   @Test
-   public void addPortafolioPortafolioAlreadyExist() throws Exception {
-      // ----la preparacion de los datos de prueba-------
-      portfolioRepository.create(new Portfolio("my_coins", 45.45d, 1));
+        MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
+        //------------ las verificaciones--------------------
+        Assertions.assertEquals(412, response.getStatus());
 
-      // ----la ejecucion de la prueba misma--------------
-      MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(Routes.PORTFOLIO_PATH).content(
-            "{\n" + "    \"name\": \"my_coins\",\n" + "    \"idUser\": \"1\",\n" + "    \"balance\": \"0.0\"\n" + "}")
-            .contentType(MediaType.APPLICATION_JSON);
+        String textREsponse = response.getContentAsString();
+        ErrorResponse error = objectMapper.readValue(textREsponse, ErrorResponse.class);
 
-      MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
-      // ------------ las verificaciones--------------------
-      Assertions.assertEquals(412, response.getStatus());
+        Assertions.assertEquals("001", error.getCode());
+        Assertions.assertEquals("THE PORTFOLIO NAME IS ALREADY IN USE", error.getMessage());
 
-      String textREsponse = response.getContentAsString();
-      ErrorResponse error = objectMapper.readValue(textREsponse, ErrorResponse.class);
-
-      Assertions.assertEquals("001", error.getCode());
-      Assertions.assertEquals("THE PORTFOLIO NAME IS ALREADY IN USE", error.getMessage());
-
-   }
-
-   @Test
+    }
+	
+	@Test
    @Sql("/testdata/get_portafolios_user.sql")
    public void getPortafoliosByUser() throws Exception {
       MockHttpServletRequestBuilder request = MockMvcRequestBuilders
@@ -94,7 +106,7 @@ public class PortfolioControllerTest {
       Assertions.assertEquals(2, portfolio[0].getPortfolios().size());
    }
 
-   @Test
+    @Test
    @Sql("/testdata/get_assets_avg_distribution.sql")
    public void getDistributionPortfolio() throws Exception {
       MockHttpServletRequestBuilder request = MockMvcRequestBuilders
@@ -119,7 +131,35 @@ public class PortfolioControllerTest {
 
    }
 
-   @Test
+
+    @Test
+    @Sql("/testdata/getTransacctionInPortfolio.sql")
+    public void getTransactionInPortfolioHappyPath() throws Exception{
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get(Routes.PORTFOLIO_PATH+Routes.PORTFOLIO_TRANSACTIONS,1)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
+        Assertions.assertEquals(200, response.getStatus());
+
+        Transaction[] transactions = objectMapper.readValue(response.getContentAsString(), Transaction[].class);
+        Assertions.assertEquals(1, transactions.length);
+    }
+
+    @Test
+    public void getTransactionInPortfolioWhenPortfolioDoesNotExist() throws Exception{
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get(Routes.PORTFOLIO_PATH+Routes.PORTFOLIO_TRANSACTIONS, 1)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
+        Assertions.assertEquals(404, response.getStatus());
+
+        ErrorResponse error = objectMapper.readValue(response.getContentAsString(), ErrorResponse.class);
+        Assertions.assertEquals("PORTFOLIO WITH THIS ID DOES NOT EXISTS", error.getMessage());
+    }
+
+     @Test
    @Sql("/testdata/get_assets_avg_distribution.sql")
    public void getDistributionNoPortfolio() throws Exception {
       MockHttpServletRequestBuilder request = MockMvcRequestBuilders

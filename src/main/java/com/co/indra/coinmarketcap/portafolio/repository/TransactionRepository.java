@@ -45,4 +45,9 @@ public class TransactionRepository {
             new TransactionRowMapper(), idAsset);
    }
 
+	public List<Transaction> getTransactionInPortfolio(int idPortfolio){
+		return template.query("select * from tbl_assets_transaction inner join tbl_assets on tbl_assets.id_assets = tbl_assets_transaction.id_asset where tbl_assets.id_portfolio=?",
+				new TransactionRowMapper(), idPortfolio);
+	}
+
 }
