@@ -12,6 +12,7 @@ import com.co.indra.coinmarketcap.portafolio.models.responses.ListPortfolioRespo
 import com.co.indra.coinmarketcap.portafolio.models.responses.PortfolioDistribution;
 import com.co.indra.coinmarketcap.portafolio.repository.AssetRepository;
 import com.co.indra.coinmarketcap.portafolio.repository.PortfolioRepository;
+import com.co.indra.coinmarketcap.portafolio.repository.TransactionRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -40,7 +41,8 @@ public class PortfolioControllerTest {
 	@Autowired
 	private PortfolioRepository portfolioRepository;
 	
-
+    @Autowired
+    private TransactionRepository transactionRepository;
 	
 	@Test
     public void addPortafolioHappyPath() throws Exception {
@@ -252,4 +254,62 @@ public class PortfolioControllerTest {
       Assertions.assertEquals("NOT FOUND", error.getCode());
       Assertions.assertEquals("PORTFOLIO WITH THIS ID DOES NOT EXISTS", error.getMessage());
    }
+
+    @Test
+    @Sql("/testdata/put_transaction.sql")
+    public void editTransactionHappyPath() throws Exception {
+        List<Transaction> transactions = transactionRepository.getTransactionById(3);
+        Transaction transactionToAssert = transactions.get(0);
+        Assertions.assertEquals(transactionToAssert.getIdAsset(), 1);
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .put(Routes.PORTFOLIO_PATH+Routes.TRANSACTIONS_PATH + Routes.EDIT_TRANSACTION, 3)
+                .content("{\n" +
+                        "    \"price\": 5000,\n" +
+                        "    \"dateTime\": \"2022-05-18T00:00:00.000-05:00\",\n" +
+                        "    \"fee\": 30.30,\n" +
+                        "    \"notes\": \"ADSERT WEQ crte\",\n" +
+                        "    \"quantity\": 3,\n" +
+                        "    \"amount\": 15\n" +
+                        "}")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
+        Assertions.assertEquals(200, response.getStatus());
+
+        List<Transaction> transactions1 = transactionRepository.getTransactionById(3);
+        Assertions.assertEquals(1, transactions1.size());
+
+        Transaction transactionToAssert1 = transactions1.get(0);
+
+        Assertions.assertEquals(5000, transactionToAssert1.getPrice());
+        Assertions.assertEquals("2022-05-18", transactionToAssert1.getDateTime().toString());
+        Assertions.assertEquals(30.30, transactionToAssert1.getFee());
+        Assertions.assertEquals("ADSERT WEQ crte", transactionToAssert1.getNotes());
+        Assertions.assertEquals(3, transactionToAssert1.getQuantity());
+        Assertions.assertEquals(15, transactionToAssert1.getAmount());
+
+    }
+
+    @Test
+    public void editBadTransaction() throws Exception {
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .put(Routes.PORTFOLIO_PATH+Routes.TRANSACTIONS_PATH + Routes.EDIT_TRANSACTION, 3)
+                .content("{\n" +
+                        "    \"price\": 5000,\n" +
+                        "    \"dateTime\": \"2022-05-18T00:00:00.000-05:00\",\n" +
+                        "    \"fee\": 30.30,\n" +
+                        "    \"notes\": \"ADSERT WEQ crte\",\n" +
+                        "    \"quantity\": 3,\n" +
+                        "    \"amount\": 15\n" +
+                        "}")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
+        Assertions.assertEquals(404, response.getStatus());
+        String textResponse = response.getContentAsString();
+        ErrorResponse error = objectMapper.readValue(textResponse, ErrorResponse.class);
+
+        Assertions.assertEquals("NOT FOUND", error.getCode());
+        Assertions.assertEquals("012", error.getMessage());
+    }
 }
