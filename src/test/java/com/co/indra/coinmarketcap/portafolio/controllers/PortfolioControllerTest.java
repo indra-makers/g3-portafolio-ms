@@ -279,9 +279,15 @@ public class PortfolioControllerTest {
         List<Transaction> transactions1 = transactionRepository.getTransactionById(3);
         Assertions.assertEquals(1, transactions1.size());
 
-        Transaction transactionToAssert1 = transactions.get(0);
+        Transaction transactionToAssert1 = transactions1.get(0);
 
-        Assertions.assertEquals(2000, transactionToAssert1.getPrice());
+        Assertions.assertEquals(5000, transactionToAssert1.getPrice());
+        Assertions.assertEquals("2022-05-18", transactionToAssert1.getDateTime().toString());
+        Assertions.assertEquals(30.30, transactionToAssert1.getFee());
+        Assertions.assertEquals("ADSERT WEQ crte", transactionToAssert1.getNotes());
+        Assertions.assertEquals(3, transactionToAssert1.getQuantity());
+        Assertions.assertEquals(15, transactionToAssert1.getAmount());
+
     }
 
     @Test
