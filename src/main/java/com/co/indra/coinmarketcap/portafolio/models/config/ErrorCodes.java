@@ -1,4 +1,4 @@
-package com.co.indra.coinmarketcap.portafolio.config;
+package com.co.indra.coinmarketcap.portafolio.models.config;
 
 public enum ErrorCodes {
    NAME_ALREADY_IN_USE("THE PORTFOLIO NAME IS ALREADY IN USE", "001"), USER_NOT_EXIST("USER NOT EXIST", "002"),

@@ -1,6 +1,6 @@
 package com.co.indra.coinmarketcap.portafolio.exceptions;
 
-import com.co.indra.coinmarketcap.portafolio.config.ErrorCodes;
+import com.co.indra.coinmarketcap.portafolio.models.config.ErrorCodes;
 
 public class BusinessException extends RuntimeException {
    private ErrorCodes code;

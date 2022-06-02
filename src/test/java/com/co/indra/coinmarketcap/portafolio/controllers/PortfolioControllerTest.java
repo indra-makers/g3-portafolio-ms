@@ -4,13 +4,12 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import com.co.indra.coinmarketcap.portafolio.config.Routes;
+import com.co.indra.coinmarketcap.portafolio.models.config.Routes;
 import com.co.indra.coinmarketcap.portafolio.models.entities.Portfolio;
 import com.co.indra.coinmarketcap.portafolio.models.entities.Transaction;
 import com.co.indra.coinmarketcap.portafolio.models.responses.ErrorResponse;
 import com.co.indra.coinmarketcap.portafolio.models.responses.ListPortfolioResponse;
 import com.co.indra.coinmarketcap.portafolio.models.responses.PortfolioDistribution;
-import com.co.indra.coinmarketcap.portafolio.repository.AssetRepository;
 import com.co.indra.coinmarketcap.portafolio.repository.PortfolioRepository;
 import com.co.indra.coinmarketcap.portafolio.repository.TransactionRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
