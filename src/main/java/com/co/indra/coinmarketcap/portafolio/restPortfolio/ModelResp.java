@@ -4,9 +4,9 @@ public class ModelResp {
     private int userId;
     private String name;
     private String mail;
-    private Long idMembership;
+    private int idMembership;
 
-    public ModelResp(int userId, String name, String mail, Long idMembership) {
+    public ModelResp(int userId, String name, String mail, int idMembership) {
         this.userId = userId;
         this.name = name;
         this.mail = mail;
@@ -37,11 +37,11 @@ public class ModelResp {
         this.mail = mail;
     }
 
-    public Long getIdMembership() {
+    public int getIdMembership() {
         return idMembership;
     }
 
-    public void setIdMembership(Long idMembership) {
+    public void setIdMembership(int idMembership) {
         this.idMembership = idMembership;
     }
 }

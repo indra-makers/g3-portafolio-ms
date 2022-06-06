@@ -19,14 +19,13 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
-
-import javax.transaction.Transactional;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-class ExternalApiTest {
+public class ExternelApiTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -39,15 +38,16 @@ class ExternalApiTest {
 
     @Test
     public void userExistsHappyPath() throws Exception{
-        ModelResp mockUser = new ModelResp(1, "juliancho", "julian.giraldo2", 1L);
+        ModelResp mockUser = new ModelResp(1, "juliancho", "julian.giraldo2", 1);
         ResponseEntity<ModelResp> entity = new ResponseEntity<>(mockUser, HttpStatus.OK);
         Mockito.when(restTemplate.getForEntity(
                 Mockito.anyString(),
                 Mockito.<Class<ModelResp>>any()
         )).thenReturn(entity);
+
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post(Routes.PORTFOLIO_PATH)
                 .content("{\n" +
-                        "  \"balance\": 123142,\n" +
+                        "  \"balance\": 23,\n" +
                         "  \"id\": 1,\n" +
                         "  \"idUser\": 1,\n" +
                         "  \"name\": \"port\"\n" +
