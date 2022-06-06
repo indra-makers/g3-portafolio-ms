@@ -17,5 +17,7 @@ public class Routes {
 
    public static final String EDIT_TRANSACTION = "/{IdTransaction}";
    public static final String PORTFOLIO_TRANSACTIONS = "/{IdPortfolio}/transactions";
+   public static final String USER_PATH = "/user";
+   public static final String USER_ID = "/{idUser}";
 
 }

@@ -12,6 +12,9 @@ public enum ErrorCodes {
    PORTFOLIO_NOT_EXIST_WHIT_THIS_NAME("PORTFOLIO WITH THIS NAME DOES NOT EXISTS", "011"),
 
    TRANSACTION_NOT_EXIST_WHIT_THIS_ID("TRANSACTION WITH THIS ID DOES NOT EXISTS", "012");
+
+   //USER_NOT_EXIST("El usuario no exite","013");
+
    String message;
    String code;
 

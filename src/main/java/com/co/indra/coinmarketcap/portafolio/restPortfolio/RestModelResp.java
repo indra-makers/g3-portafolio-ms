@@ -6,14 +6,14 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 public class RestModelResp {
-    private final RestTemplate restTemplate;
+    private final RestTemplate template;
 
     public RestModelResp(RestTemplateBuilder restTemplateBuilder) {
-        this.restTemplate = restTemplateBuilder.build();
+        this.template =  restTemplateBuilder.build();
     }
 
-    public RespuestaModelResp getPostsPlainJSON() {
-        String url = "https://g3-users-ms.herokuapp.com/api/user-ms/users/1";
-        return this.restTemplate.getForObject(url, RespuestaModelResp.class);
+    public ModelResp getUserById(int id) {
+        String url = "https://g3-users-ms.herokuapp.com/api/user-ms/users/1"+id;
+        return this.template.getForObject(url, ModelResp.class);
     }
 }

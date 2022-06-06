@@ -1,21 +1,23 @@
 package com.co.indra.coinmarketcap.portafolio.services;
 
-import java.util.List;
-
-import com.co.indra.coinmarketcap.portafolio.models.entities.Transaction;
-import com.co.indra.coinmarketcap.portafolio.models.responses.AssetAvgDist;
-import com.co.indra.coinmarketcap.portafolio.models.responses.PortfolioDistribution;
-import com.co.indra.coinmarketcap.portafolio.repository.AssetRepository;
-import com.co.indra.coinmarketcap.portafolio.repository.TransactionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.co.indra.coinmarketcap.portafolio.config.ErrorCodes;
 import com.co.indra.coinmarketcap.portafolio.exceptions.BusinessException;
 import com.co.indra.coinmarketcap.portafolio.exceptions.NotFoundException;
 import com.co.indra.coinmarketcap.portafolio.models.entities.Portfolio;
+import com.co.indra.coinmarketcap.portafolio.models.entities.Transaction;
+import com.co.indra.coinmarketcap.portafolio.models.responses.AssetAvgDist;
 import com.co.indra.coinmarketcap.portafolio.models.responses.ListPortfolioResponse;
+import com.co.indra.coinmarketcap.portafolio.models.responses.PortfolioDistribution;
 import com.co.indra.coinmarketcap.portafolio.models.responses.PortfolioSumary;
+import com.co.indra.coinmarketcap.portafolio.repository.AssetRepository;
 import com.co.indra.coinmarketcap.portafolio.repository.PortfolioRepository;
+import com.co.indra.coinmarketcap.portafolio.repository.TransactionRepository;
+import com.co.indra.coinmarketcap.portafolio.restPortfolio.ModelResp;
+import com.co.indra.coinmarketcap.portafolio.restPortfolio.RestModelResp;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class PortfolioService {
@@ -23,18 +25,21 @@ public class PortfolioService {
    private PortfolioRepository portfolioRepository;
    @Autowired
    private AssetRepository assetRepository;
-
    @Autowired
    private TransactionRepository transactionRepository;
-
+   @Autowired
+   private RestModelResp restModelResp;
    public void createPortfolio(Portfolio portfolio) {
       List<Portfolio> portfolioByname = portfolioRepository.findByNameAndUsername(portfolio.getIdUser(),
             portfolio.getName());
       if (!portfolioByname.isEmpty()) {
          throw new BusinessException(ErrorCodes.NAME_ALREADY_IN_USE);
-      } else {
-         portfolioRepository.create(portfolio);
+      } try{
+            ModelResp modelResp = restModelResp.getUserById(portfolio.getIdUser());
+      } catch (Exception e){
+            throw new NotFoundException(ErrorCodes.USER_NOT_EXIST.getMessage());
       }
+      portfolioRepository.create(portfolio);
    }
 
    public List<Portfolio> getPorfolioByUser(int idUser) {

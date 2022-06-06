@@ -1,26 +1,23 @@
 package com.co.indra.coinmarketcap.portafolio.restPortfolio;
 
 public class ModelResp {
-    private String userId;
+    private int userId;
     private String name;
     private String mail;
     private Long idMembership;
 
-    public ModelResp() {
-    }
-
-    public ModelResp(String userId, String name, String mail, Long idMembership) {
+    public ModelResp(int userId, String name, String mail, Long idMembership) {
         this.userId = userId;
         this.name = name;
         this.mail = mail;
         this.idMembership = idMembership;
     }
 
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
