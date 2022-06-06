@@ -1,4 +1,4 @@
-package com.co.indra.coinmarketcap.portafolio.config;
+package com.co.indra.coinmarketcap.portafolio.models.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

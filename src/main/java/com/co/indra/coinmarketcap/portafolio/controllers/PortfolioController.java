@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
-import com.co.indra.coinmarketcap.portafolio.config.Routes;
+import com.co.indra.coinmarketcap.portafolio.models.config.Routes;
 import com.co.indra.coinmarketcap.portafolio.models.entities.Portfolio;
 import com.co.indra.coinmarketcap.portafolio.services.PortfolioService;
 

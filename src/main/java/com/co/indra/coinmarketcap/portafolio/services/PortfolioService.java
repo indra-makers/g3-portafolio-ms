@@ -7,9 +7,11 @@ import com.co.indra.coinmarketcap.portafolio.models.responses.AssetAvgDist;
 import com.co.indra.coinmarketcap.portafolio.models.responses.PortfolioDistribution;
 import com.co.indra.coinmarketcap.portafolio.repository.AssetRepository;
 import com.co.indra.coinmarketcap.portafolio.repository.TransactionRepository;
+import com.co.indra.coinmarketcap.portafolio.validation.UserModel;
+import com.co.indra.coinmarketcap.portafolio.validation.UserRest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.co.indra.coinmarketcap.portafolio.config.ErrorCodes;
+import com.co.indra.coinmarketcap.portafolio.models.config.ErrorCodes;
 import com.co.indra.coinmarketcap.portafolio.exceptions.BusinessException;
 import com.co.indra.coinmarketcap.portafolio.exceptions.NotFoundException;
 import com.co.indra.coinmarketcap.portafolio.models.entities.Portfolio;
@@ -27,14 +29,21 @@ public class PortfolioService {
    @Autowired
    private TransactionRepository transactionRepository;
 
+   @Autowired
+   private UserRest userRest;
+
    public void createPortfolio(Portfolio portfolio) {
       List<Portfolio> portfolioByname = portfolioRepository.findByNameAndUsername(portfolio.getIdUser(),
             portfolio.getName());
       if (!portfolioByname.isEmpty()) {
          throw new BusinessException(ErrorCodes.NAME_ALREADY_IN_USE);
-      } else {
-         portfolioRepository.create(portfolio);
+      }try{
+         UserModel userModel= userRest.getUserById(portfolio.getIdUser());
+      } catch (Exception e) {
+         throw new NotFoundException((ErrorCodes.USER_NOT_EXIST).getMessage());
       }
+      portfolioRepository.create(portfolio);
+
    }
 
    public List<Portfolio> getPorfolioByUser(int idUser) {

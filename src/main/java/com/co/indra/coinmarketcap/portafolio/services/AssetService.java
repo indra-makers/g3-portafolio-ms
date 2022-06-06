@@ -1,6 +1,6 @@
 package com.co.indra.coinmarketcap.portafolio.services;
 
-import com.co.indra.coinmarketcap.portafolio.config.ErrorCodes;
+import com.co.indra.coinmarketcap.portafolio.models.config.ErrorCodes;
 import com.co.indra.coinmarketcap.portafolio.exceptions.BusinessException;
 import com.co.indra.coinmarketcap.portafolio.exceptions.NotFoundException;
 import com.co.indra.coinmarketcap.portafolio.models.entities.Asset;
@@ -13,10 +13,6 @@ import com.co.indra.coinmarketcap.portafolio.services.helper.Helper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Service
