@@ -2,7 +2,7 @@ package com.co.indra.coinmarketcap.portafolio.services.helper;
 
 import java.util.List;
 
-import com.co.indra.coinmarketcap.portafolio.models.config.ErrorCodes;
+import com.co.indra.coinmarketcap.portafolio.config.ErrorCodes;
 import com.co.indra.coinmarketcap.portafolio.exceptions.BusinessException;
 import com.co.indra.coinmarketcap.portafolio.models.entities.Asset;
 import com.co.indra.coinmarketcap.portafolio.models.entities.Transaction;

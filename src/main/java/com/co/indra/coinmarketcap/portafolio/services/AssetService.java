@@ -1,6 +1,6 @@
 package com.co.indra.coinmarketcap.portafolio.services;
 
-import com.co.indra.coinmarketcap.portafolio.models.config.ErrorCodes;
+import com.co.indra.coinmarketcap.portafolio.config.ErrorCodes;
 import com.co.indra.coinmarketcap.portafolio.exceptions.BusinessException;
 import com.co.indra.coinmarketcap.portafolio.exceptions.NotFoundException;
 import com.co.indra.coinmarketcap.portafolio.models.entities.Asset;

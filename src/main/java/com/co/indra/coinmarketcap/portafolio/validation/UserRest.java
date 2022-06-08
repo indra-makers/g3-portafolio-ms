@@ -1,21 +1,32 @@
 package com.co.indra.coinmarketcap.portafolio.validation;
 
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import com.co.indra.coinmarketcap.portafolio.exceptions.NotFoundException;
+import com.co.indra.coinmarketcap.portafolio.config.ErrorCodes;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
 public class UserRest {
 
-    private RestTemplate template;
+    @Autowired
+    private RestTemplate restTemplate;
 
-    public UserRest(RestTemplateBuilder restTemplateBuilder) {
-        this.template = restTemplateBuilder.build();
-    }
+    @Value("${api.users.url}")
+    private String apiUrl;
 
-    public UserModel getUserById(int id){
-        String url ="https://g3-users-ms.herokuapp.com/api/user-ms/users/"+id;
-        return this.template.getForObject(url, UserModel.class);
+    @Cacheable(value = "getUserByIdExternal", cacheManager = "expire30seg", key = "#id", unless = "#result == null")
+    public UserModel getUserById(int id) {
+        String url = apiUrl+"/"+id;
+        ResponseEntity<UserModel> response = restTemplate.getForEntity(url, UserModel.class);
+        if (response.getStatusCode() != HttpStatus.OK) {
+            throw new NotFoundException(ErrorCodes.USER_DOES_NOT_EXIST.getMessage());
+        }
+        return response.getBody();
     }
 
 }

@@ -1,4 +1,4 @@
-package com.co.indra.coinmarketcap.portafolio.models.config;
+package com.co.indra.coinmarketcap.portafolio.config;
 
 public class Routes {
    public static final String PORTFOLIO_PATH = "/portfolios";
