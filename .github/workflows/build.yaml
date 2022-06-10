@@ -9,6 +9,9 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        redis-version: [ 4, 5 ]
     services:
       postgres:
         image: postgres:11.6-alpine
@@ -27,6 +30,11 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
+      - name: Start Redis v${{ matrix.redis-version }}
+      - uses: superchargejs/redis-github-action@1.1.0
+        with:
+          redis-version: ${{ matrix.redis-version }}
+      - run: echo „done“
       - name: Build
         run: mvn install
       - name: tests
