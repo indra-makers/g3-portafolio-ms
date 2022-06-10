@@ -5,7 +5,6 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: node:10.18-jessie
     services:
       rabbitmq:
         image: rabbitmq:management
@@ -37,12 +36,8 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-      - name: Install dependencies
-        run: npm ci
       - name: Build
         run: mvn install
-      - name: Connect to Redis
-        run: node client.js
       - name: tests
         run: mvn test
       - name: Publish Test Report
