@@ -38,6 +38,8 @@ jobs:
           distribution: 'adopt'
       - name: Build
         run: mvn install
+      - name: Connect to Redis
+        run: node client.js
       - name: tests
         run: mvn test
       - name: Publish Test Report
