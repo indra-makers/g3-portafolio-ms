@@ -36,8 +36,6 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-      - name: Install dependencies
-        run: npm ci
       - name: Connect to Redis
         run: node client.js
 
