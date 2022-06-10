@@ -1,23 +1,24 @@
 package com.co.indra.coinmarketcap.portafolio.services;
 
-import java.util.List;
-
+import com.co.indra.coinmarketcap.portafolio.config.ErrorCodes;
+import com.co.indra.coinmarketcap.portafolio.exceptions.BusinessException;
+import com.co.indra.coinmarketcap.portafolio.exceptions.NotFoundException;
+import com.co.indra.coinmarketcap.portafolio.models.entities.Portfolio;
 import com.co.indra.coinmarketcap.portafolio.models.entities.Transaction;
 import com.co.indra.coinmarketcap.portafolio.models.responses.AssetAvgDist;
+import com.co.indra.coinmarketcap.portafolio.models.responses.ListPortfolioResponse;
 import com.co.indra.coinmarketcap.portafolio.models.responses.PortfolioDistribution;
+import com.co.indra.coinmarketcap.portafolio.models.responses.PortfolioSumary;
 import com.co.indra.coinmarketcap.portafolio.repository.AssetRepository;
+import com.co.indra.coinmarketcap.portafolio.repository.PortfolioRepository;
 import com.co.indra.coinmarketcap.portafolio.repository.TransactionRepository;
 import com.co.indra.coinmarketcap.portafolio.validation.UserModel;
 import com.co.indra.coinmarketcap.portafolio.validation.UserRest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import com.co.indra.coinmarketcap.portafolio.models.config.ErrorCodes;
-import com.co.indra.coinmarketcap.portafolio.exceptions.BusinessException;
-import com.co.indra.coinmarketcap.portafolio.exceptions.NotFoundException;
-import com.co.indra.coinmarketcap.portafolio.models.entities.Portfolio;
-import com.co.indra.coinmarketcap.portafolio.models.responses.ListPortfolioResponse;
-import com.co.indra.coinmarketcap.portafolio.models.responses.PortfolioSumary;
-import com.co.indra.coinmarketcap.portafolio.repository.PortfolioRepository;
+
+import java.util.List;
 
 @Service
 public class PortfolioService {
@@ -45,7 +46,7 @@ public class PortfolioService {
       portfolioRepository.create(portfolio);
 
    }
-
+   @Cacheable(value = "getCacheUsers", cacheManager = "expireOneMinute", key = "#idUser", unless = "#result == null")
    public List<Portfolio> getPorfolioByUser(int idUser) {
 
       if (portfolioRepository.getPorfolio(idUser).isEmpty()) {

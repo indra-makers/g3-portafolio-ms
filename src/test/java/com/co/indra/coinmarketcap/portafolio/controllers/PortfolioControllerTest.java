@@ -1,10 +1,6 @@
 package com.co.indra.coinmarketcap.portafolio.controllers;
 
-import java.util.List;
-
-import javax.transaction.Transactional;
-
-import com.co.indra.coinmarketcap.portafolio.models.config.Routes;
+import com.co.indra.coinmarketcap.portafolio.config.Routes;
 import com.co.indra.coinmarketcap.portafolio.models.entities.Portfolio;
 import com.co.indra.coinmarketcap.portafolio.models.entities.Transaction;
 import com.co.indra.coinmarketcap.portafolio.models.responses.ErrorResponse;
@@ -12,19 +8,24 @@ import com.co.indra.coinmarketcap.portafolio.models.responses.ListPortfolioRespo
 import com.co.indra.coinmarketcap.portafolio.models.responses.PortfolioDistribution;
 import com.co.indra.coinmarketcap.portafolio.repository.PortfolioRepository;
 import com.co.indra.coinmarketcap.portafolio.repository.TransactionRepository;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
-import com.fasterxml.jackson.databind.DeserializationFeature;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import javax.transaction.Transactional;
+import java.util.List;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -42,6 +43,14 @@ public class PortfolioControllerTest {
 	
     @Autowired
     private TransactionRepository transactionRepository;
+
+    @Autowired
+    private RedisConnection redisConnection;
+
+    @BeforeEach
+    public void beforeEach() {
+        redisConnection.flushAll();
+    }
 	
 	@Test
     public void addPortafolioHappyPath() throws Exception {

@@ -1,7 +1,7 @@
 package com.co.indra.coinmarketcap.portafolio.controllers;
 
-import com.co.indra.coinmarketcap.portafolio.models.config.ErrorCodes;
-import com.co.indra.coinmarketcap.portafolio.models.config.Routes;
+import com.co.indra.coinmarketcap.portafolio.config.ErrorCodes;
+import com.co.indra.coinmarketcap.portafolio.config.Routes;
 import com.co.indra.coinmarketcap.portafolio.models.responses.ErrorResponse;
 import com.co.indra.coinmarketcap.portafolio.validation.UserModel;
 import com.fasterxml.jackson.databind.ObjectMapper;

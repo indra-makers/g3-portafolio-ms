@@ -1,6 +1,6 @@
 package com.co.indra.coinmarketcap.portafolio.services;
 
-import com.co.indra.coinmarketcap.portafolio.models.config.ErrorCodes;
+import com.co.indra.coinmarketcap.portafolio.config.ErrorCodes;
 import com.co.indra.coinmarketcap.portafolio.exceptions.BusinessException;
 import com.co.indra.coinmarketcap.portafolio.exceptions.NotFoundException;
 import com.co.indra.coinmarketcap.portafolio.models.entities.Asset;
@@ -9,8 +9,8 @@ import com.co.indra.coinmarketcap.portafolio.repository.AssetRepository;
 import com.co.indra.coinmarketcap.portafolio.repository.PortfolioRepository;
 import com.co.indra.coinmarketcap.portafolio.repository.TransactionRepository;
 import com.co.indra.coinmarketcap.portafolio.services.helper.Helper;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,7 +26,7 @@ public class AssetService {
 
    @Autowired
    TransactionRepository transactionRepository;
-
+   @CacheEvict(value ="getCacheUsers",key = "#idUser")
    public void createAsset(Asset asset, int idPortfolio) {
       if (portfolioRepository.findByPortfolioId(idPortfolio).isEmpty()) {
          throw new NotFoundException(ErrorCodes.PORTFOLIO_DOES_NOT_EXIST.getMessage());
