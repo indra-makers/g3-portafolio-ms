@@ -17,9 +17,11 @@ import org.junit.jupiter.api.Assertions;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -46,6 +48,9 @@ public class PortfolioControllerTest {
     private TransactionRepository transactionRepository;
     @Autowired
     private RedisConnection redisConnection;
+
+    @MockBean
+    private RabbitTemplate rabbitTemplate;
 
     @BeforeEach
     public void beforeEach() {
