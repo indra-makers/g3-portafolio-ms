@@ -1,6 +1,6 @@
 create table tbl_assets(
 	id_assets serial primary key,
-	symbol varchar(3) NOT NULL UNIQUE,
+	symbol varchar(3) UNIQUE,
 	id_portfolio int not null,
 	accouting int not null,
 	name_asset varchar(50) not null,
