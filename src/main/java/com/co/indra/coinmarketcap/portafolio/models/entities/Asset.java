@@ -8,6 +8,8 @@ public class Asset implements Serializable {
 
    private int idPortfolio;
 
+   private String symbol;
+
    private int accouting;
 
    private String type;
@@ -32,14 +34,17 @@ public class Asset implements Serializable {
 
    }
 
-   public Asset(int accouting, String nameAsset, int quantity, Double price, Double dailyVariation, Double avgBuyPrice,
-         Double profit, Double loss) {
-      super();
+   public Asset(int id, int idPortfolio, String symbol, int accouting, String type, String nameAsset, int quantity, Double price, Double dailyVariation, Double holding, Double avgBuyPrice, Double profit, Double loss) {
+      this.id = id;
+      this.idPortfolio = idPortfolio;
+      this.symbol = symbol;
       this.accouting = accouting;
+      this.type = type;
       this.nameAsset = nameAsset;
       this.quantity = quantity;
       this.price = price;
       this.dailyVariation = dailyVariation;
+      this.holding = holding;
       this.avgBuyPrice = avgBuyPrice;
       this.profit = profit;
       this.loss = loss;
@@ -61,12 +66,28 @@ public class Asset implements Serializable {
       this.idPortfolio = idPortfolio;
    }
 
+   public String getSymbol() {
+      return symbol;
+   }
+
+   public void setSymbol(String symbol) {
+      this.symbol = symbol;
+   }
+
    public int getAccouting() {
       return accouting;
    }
 
    public void setAccouting(int accouting) {
       this.accouting = accouting;
+   }
+
+   public String getType() {
+      return type;
+   }
+
+   public void setType(String type) {
+      this.type = type;
    }
 
    public String getNameAsset() {
@@ -132,13 +153,4 @@ public class Asset implements Serializable {
    public void setLoss(Double loss) {
       this.loss = loss;
    }
-
-   public String getType() {
-      return type;
-   }
-
-   public void setType(String type) {
-      this.type = type;
-   }
-
 }

@@ -28,6 +28,7 @@ class AssetRowMapper implements RowMapper<Asset> {
       asset.setAvgBuyPrice(rs.getDouble("avg_buy_price"));
       asset.setProfit(rs.getDouble("profit"));
       asset.setLoss(rs.getDouble("loss"));
+      asset.setSymbol(rs.getString("symbol"));
       return asset;
    }
 }
@@ -42,10 +43,10 @@ public class AssetRepository {
       template.update(
             "INSERT INTO tbl_assets(id_portfolio, accouting ,"
                   + "name_asset,quantity,price,daily_variation,holding, avg_buy_price, profit ,"
-                  + "loss) values(?,?,?,?,?,?,?,?,?,?)",
+                  + "loss, symbol) values(?,?,?,?,?,?,?,?,?,?,?)",
             idPortfolio, asset.getAccouting(), asset.getNameAsset(), asset.getQuantity(), asset.getPrice(),
             asset.getDailyVariation(), (asset.getPrice() * asset.getQuantity()), asset.getAvgBuyPrice(),
-            asset.getProfit(), asset.getLoss());
+            asset.getProfit(), asset.getLoss(), asset.getSymbol());
    }
 
    public List<Asset> findByPortfolioIdNameAsset(int idPortfolio, String nameAsset) {
@@ -83,4 +84,15 @@ public class AssetRepository {
    public List<Asset> findByPortfolioId(int idPortfolio) {
       return template.query("SELECT * FROM tbl_assets WHERE id_portfolio=?", new AssetRowMapper(), idPortfolio);
    }
+
+   public void updateAssetMq(Double price, String symbol, Double dailyVariation, int id, Double profit, Double loss){
+      template.update("UPDATE tbl_assets SET price  = ?, daily_variation = ?, profit = ?, loss = ? WHERE symbol = ? and id_assets = ?", price,
+              dailyVariation, profit, loss, symbol, id);
+   }
+
+   public List<Asset> findAssetsBySymbol(String symbol) {
+      return template.query("SELECT * FROM tbl_assets WHERE symbol=?", new AssetRowMapper(),
+              symbol);
+   }
+
 }

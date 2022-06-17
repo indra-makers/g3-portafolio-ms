@@ -43,6 +43,21 @@ public class AssetService {
       }
    }
 
+   public void updateAsset(Double price, String symbol, Double dailyVariation){
+      List<Asset> assetList =  assetRepository.findAssetsBySymbol(symbol);
+      Double profit = 0d;
+      Double loss = 0d;
+      if(!assetList.isEmpty()){
+         for(Asset e: assetList){
+            if(price - e.getPrice() > 0){
+               profit = 0d;
+               loss = price - e.getPrice();
+            }
+            assetRepository.updateAssetMq(price, symbol, dailyVariation, e.getId(), profit, loss);
+         }
+      }
+   }
+
    public void addTransactionToAsset(Transaction transaction, int idAsset) {
       if (assetRepository.findById(idAsset).isEmpty()) {
          throw new NotFoundException(ErrorCodes.ASSET_NOT_EXIST.getMessage());
